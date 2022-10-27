@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaManagement.Infrastructure
 {
-    public class CinemaManagementContext :IdentityDbContext<User, UserRole, Guid>
+    public class CinemaManagementContext : IdentityDbContext<User, UserRole, Guid>
     {
         public CinemaManagementContext(DbContextOptions options):base(options)
         {

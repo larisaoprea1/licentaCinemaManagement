@@ -26,8 +26,4 @@
     <ProjectReference Include="..\CinemaManagement.Application\CinemaManagement.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
