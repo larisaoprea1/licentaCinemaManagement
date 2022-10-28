@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+﻿using CinemaManagement.Domain.Models;
 
-namespace CinemaManagement.Domain.Models
+namespace CinemaManagement.ViewModels
 {
-    public class User : IdentityUser<Guid>
+    public class UserViewModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
