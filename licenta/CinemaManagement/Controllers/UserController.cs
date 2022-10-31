@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CinemaManagement.Application.Users.Commands.AssignRole;
+using CinemaManagement.Application.Users.Commands.ChangePassword;
 using CinemaManagement.Application.Users.Commands.DeleteUser;
 using CinemaManagement.Application.Users.Commands.Login;
 using CinemaManagement.Application.Users.Commands.Register;
@@ -7,9 +9,10 @@ using CinemaManagement.Application.Users.Queries.GetUserByEmail;
 using CinemaManagement.Application.Users.Queries.GetUserById;
 using CinemaManagement.Application.Users.Queries.GetUserByUsername;
 using CinemaManagement.Domain.Models;
-using CinemaManagement.ViewModels;
+using CinemaManagement.ViewModels.UserViewModel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CinemaManagement.Controllers
 {
@@ -123,6 +126,48 @@ namespace CinemaManagement.Controllers
                 return Unauthorized();
             }
             return Ok(result);
+        }
+        [HttpPost]
+        [Route("assign-role")]
+        public async Task<IActionResult> AssignRole(string userName, string roleName)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var user = await _mediator.Send(new GetUserByUsernameQuery
+            {
+                UserName = userName,
+            });
+            if (user == null)
+            {
+                return NotFound("404");
+            }
+            var result = await _mediator.Send(new AssignRoleCommand
+            {
+                UserName = userName,
+                RoleName = roleName
+            });
+            if (!result)
+            {
+                BadRequest();
+            }
+            return Ok();
+        }
+        [HttpPost]
+        [Route("changepassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePassword)
+        {
+            string claim = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new ChangePasswordCommand
+            {
+                UserName = claim,
+                oldPassword = changePassword.oldPassword,
+                newPassword = changePassword.newPassword
+            });
+            if (result == false)
+            {
+                return BadRequest("400");
+            }
+            return Ok("200");
         }
         [HttpDelete]
         [Route("deleteuser/{userId}")]

@@ -29,7 +29,7 @@ namespace CinemaManagement.Application.Users.Commands.Register
 
             };
             var result = await _userManager.CreateAsync(usertToCreate, request.Password);
-            //var addRoleToUser = await _userManager.AddToRoleAsync(usertToCreate, "User");
+            var addRoleToUser = await _userManager.AddToRoleAsync(usertToCreate, "User");
             return usertToCreate;
 
         }

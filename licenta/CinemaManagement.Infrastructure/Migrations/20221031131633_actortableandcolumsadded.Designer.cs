@@ -4,6 +4,7 @@ using CinemaManagement.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CinemaManagementContext))]
-    partial class CinemaManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20221031131633_actortableandcolumsadded")]
+    partial class actortableandcolumsadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,9 +202,8 @@ namespace CinemaManagement.Infrastructure.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("RunTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("RunTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("TrailerLink")
                         .IsRequired()

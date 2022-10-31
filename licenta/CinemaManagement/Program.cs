@@ -33,6 +33,7 @@ builder.Services
     .AddRoleStore<RoleStore<UserRole, CinemaManagementContext, Guid>>();
 
 builder.Services.AddScoped<IUserRepository, UserRepositrory>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAuthentication(options =>

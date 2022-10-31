@@ -9,7 +9,7 @@ namespace CinemaManagement.Infrastructure
         public CinemaManagementContext(DbContextOptions options):base(options)
         {
         }    
-        
+        public DbSet<Actor> Actors { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<Genre> Genres { get; set; }

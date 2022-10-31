@@ -28,9 +28,9 @@ namespace CinemaManagement.Application.Users.Commands.Login
                 if (userExists != null && await _userManager.CheckPasswordAsync(userExists, request.Password))
                 {
                     var userRoles = await _userManager.GetRolesAsync(userExists);
-                    //var isAdmin = new Claim("IsAdmin", true.ToString(), ClaimValueTypes.Boolean);
-                    //var notAdmin = new Claim("IsAdmin", false.ToString(), ClaimValueTypes.Boolean);
-                    var claimsForToken = new List<Claim>
+                var isAdmin = new Claim("IsAdmin", true.ToString(), ClaimValueTypes.Boolean);
+                var notAdmin = new Claim("IsAdmin", false.ToString(), ClaimValueTypes.Boolean);
+                var claimsForToken = new List<Claim>
                 {
                     new Claim("Id", userExists.Id.ToString()),
                     new Claim("UserName", userExists.UserName),
@@ -40,19 +40,19 @@ namespace CinemaManagement.Application.Users.Commands.Login
                     new Claim("ProfileImage", userExists.ProfileImageSrc),
                     new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
                     new Claim(ClaimTypes.NameIdentifier,userExists.UserName),
-                    //notAdmin
+                    notAdmin
                 };
-                    //foreach (var userRole in userRoles)
-                    //{
-                    //    claimsForToken.Add(new Claim(ClaimTypes.Role, userRole));
+                foreach (var userRole in userRoles)
+                {
+                    claimsForToken.Add(new Claim(ClaimTypes.Role, userRole));
 
-                    //    if (userRole.Equals("Admin"))
-                    //    {
-                    //        claimsForToken.Remove(notAdmin);
-                    //        claimsForToken.Add(isAdmin);
-                    //    }
-                    //}
-                    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
+                    if (userRole.Equals("Admin"))
+                    {
+                        claimsForToken.Remove(notAdmin);
+                        claimsForToken.Add(isAdmin);
+                    }
+                }
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
                     var token = new JwtSecurityToken(
                         issuer: _configuration["Authentication:Issuer"],
                         audience: _configuration["Authentication:Audience"],

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CinemaManagement.ViewModels
+namespace CinemaManagement.ViewModels.UserViewModel
 {
     public class RegisterViewModel
     {
@@ -9,7 +9,7 @@ namespace CinemaManagement.ViewModels
         public string UserName { get; set; }
 
         [Required]
-        [EmailAddressAttribute]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -25,7 +25,7 @@ namespace CinemaManagement.ViewModels
         [MaxLength(50)]
         public string PhoneNumber { get; set; }
         [Required]
-        [UrlAttribute]
+        [Url]
         public string ProfileImageSrc { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CinemaManagement.ViewModels
+namespace CinemaManagement.ViewModels.UserViewModel
 {
     public class LoginViewModel
     {

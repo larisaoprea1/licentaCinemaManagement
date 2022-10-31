@@ -1,11 +1,11 @@
-﻿namespace CinemaManagement.Domain.Models
+﻿namespace CinemaManagement.ViewModels.MovieViewModel
 {
-    public class Movie:BaseModel
+    public class MovieForCreateViewModel
     {
         public string Name { get; set; }
-        public string Director { get; set; }    
         public string Description { get; set; }
-        public string Format { get; set; }  
+        public string Format { get; set; }
+        public string Director { get; set; }
         public bool IsAdult { get; set; }
         public string ImdbLink { get; set; }
         public string TrailerLink { get; set; }
@@ -13,9 +13,5 @@
         public DateTime ReleaseDate { get; set; }
         public string RunTime { get; set; }
         public int MovieBudget { get; set; }
-        public ICollection<Session> Sessions { get; set; }
-        public ICollection<Genre> Genres { get; set; }
-        public ICollection<Actor> Actors { get; set; }
-        public ICollection<Production> Productions { get; set; }
     }
 }
