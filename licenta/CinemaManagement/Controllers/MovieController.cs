@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CinemaManagement.Application.Movies.Commands.CreateMovie;
 using CinemaManagement.Application.Movies.Queries.GetAllMovies;
+using CinemaManagement.Application.Movies.Queries.GetMovieById;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.MovieViewModel;
 using MediatR;
@@ -29,8 +30,23 @@ namespace CinemaManagement.Controllers
             {
                 SearchString = searchMovies
             });
-            var products = _mapper.Map<IEnumerable<MovieViewModel>>(result);
-            return Ok(products);
+            var movies = _mapper.Map<IEnumerable<MovieViewModel>>(result);
+            return Ok(movies);
+        }
+        [HttpGet]
+        [Route("movieId/{movieId}")]
+        public async Task<IActionResult> GetMovie([FromRoute] Guid movieId)
+        {
+            var result = await _mediator.Send(new GetMovieByIdQuery
+            {
+                Id = movieId
+            });
+            if (result == null)
+            {
+                return NotFound();
+            }
+            var movie = _mapper.Map<MovieViewModel>(result);
+            return Ok(movie);
         }
         [HttpPost]
         [Route("addmovie")]
