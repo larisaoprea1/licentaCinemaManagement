@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CinemaManagement.Domain.Models;
-using CinemaManagement.ViewModels.GenreViewModel;
+using CinemaManagement.ViewModels.GenreViewModels;
 
 namespace CinemaManagement.Profiles.GenreProfile
 {

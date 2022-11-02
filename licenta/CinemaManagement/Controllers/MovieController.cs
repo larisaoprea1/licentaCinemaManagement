@@ -5,7 +5,7 @@ using CinemaManagement.Application.Movies.Commands.UpdateMovie;
 using CinemaManagement.Application.Movies.Queries.GetAllMovies;
 using CinemaManagement.Application.Movies.Queries.GetMovieById;
 using CinemaManagement.Domain.Models;
-using CinemaManagement.ViewModels.MovieViewModel;
+using CinemaManagement.ViewModels.MovieViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,7 +66,8 @@ namespace CinemaManagement.Controllers
                 Poster = movie.Poster,
                 ReleaseDate = movie.ReleaseDate,
                 RunTime = movie.RunTime,
-                MovieBudget = movie.MovieBudget
+                MovieBudget = movie.MovieBudget,
+                Genres = new List<Genre>()
             };
             var result = await _mediator.Send(new CreateMovieCommand
             {
@@ -93,7 +94,8 @@ namespace CinemaManagement.Controllers
                 Poster = movie.Poster,
                 ReleaseDate = movie.ReleaseDate,
                 RunTime = movie.RunTime,
-                MovieBudget = movie.MovieBudget
+                MovieBudget = movie.MovieBudget,
+                Genres = new List<Genre>()
             });
             if (result == null)
             {

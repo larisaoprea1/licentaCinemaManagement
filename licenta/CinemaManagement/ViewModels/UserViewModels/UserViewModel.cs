@@ -1,6 +1,6 @@
 ﻿using CinemaManagement.Domain.Models;
 
-namespace CinemaManagement.ViewModels.UserViewModel
+namespace CinemaManagement.ViewModels.UserViewModels
 {
     public class UserViewModel
     {

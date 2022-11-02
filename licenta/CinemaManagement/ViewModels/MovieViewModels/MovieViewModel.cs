@@ -1,6 +1,6 @@
-﻿using CinemaManagement.Domain.Models;
+﻿using CinemaManagement.ViewModels.GenreViewModels;
 
-namespace CinemaManagement.ViewModels.MovieViewModel
+namespace CinemaManagement.ViewModels.MovieViewModels
 {
     public class MovieViewModel
     {
@@ -16,6 +16,6 @@ namespace CinemaManagement.ViewModels.MovieViewModel
         public DateTime ReleaseDate { get; set; }
         public string RunTime { get; set; }
         public int MovieBudget { get; set; }
-        public ICollection<Genre> Genres { get; set; }
+        public ICollection<GenreViewModel> Genres { get; set; }
     }
 }

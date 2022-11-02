@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CinemaManagement.Domain.Models;
-using CinemaManagement.ViewModels.MovieViewModel;
+using CinemaManagement.ViewModels.MovieViewModels;
 
 namespace CinemaManagement.Profiles.MovieProfile
 {

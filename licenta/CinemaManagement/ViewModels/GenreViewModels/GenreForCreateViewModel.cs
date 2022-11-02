@@ -1,6 +1,4 @@
-﻿using CinemaManagement.Domain.Models;
-
-namespace CinemaManagement.ViewModels.GenreViewModel
+﻿namespace CinemaManagement.ViewModels.GenreViewModels
 {
     public class GenreForCreateViewModel
     {

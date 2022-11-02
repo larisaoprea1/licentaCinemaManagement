@@ -3,10 +3,8 @@ using CinemaManagement.Application.Genres.Commands.AddGenreToMovie;
 using CinemaManagement.Application.Genres.Commands.CreateGenre;
 using CinemaManagement.Application.Genres.Queries.GetAllGenres;
 using CinemaManagement.Application.Genres.Queries.GetGenreById;
-using CinemaManagement.Application.Movies.Queries.GetAllMovies;
 using CinemaManagement.Domain.Models;
-using CinemaManagement.ViewModels.GenreViewModel;
-using CinemaManagement.ViewModels.MovieViewModel;
+using CinemaManagement.ViewModels.GenreViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,6 @@
-﻿namespace CinemaManagement.ViewModels.MovieViewModel
+﻿using CinemaManagement.ViewModels.GenreViewModels;
+
+namespace CinemaManagement.ViewModels.MovieViewModels
 {
     public class MovieForUpdateViewModel
     {
@@ -12,6 +14,8 @@
         public string Poster { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string RunTime { get; set; }
+        public ICollection<GenreViewModel> Genres { get; set; }
+
         public int MovieBudget { get; set; }
     }
 }

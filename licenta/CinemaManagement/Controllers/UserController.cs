@@ -9,7 +9,7 @@ using CinemaManagement.Application.Users.Queries.GetUserByEmail;
 using CinemaManagement.Application.Users.Queries.GetUserById;
 using CinemaManagement.Application.Users.Queries.GetUserByUsername;
 using CinemaManagement.Domain.Models;
-using CinemaManagement.ViewModels.UserViewModel;
+using CinemaManagement.ViewModels.UserViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

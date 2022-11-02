@@ -17,5 +17,7 @@ namespace CinemaManagement.Application.Movies.Commands.UpdateMovie
         public DateTime ReleaseDate { get; set; }
         public string RunTime { get; set; }
         public int MovieBudget { get; set; }
+        public ICollection<Genre> Genres { get; set; }
+
     }
 }

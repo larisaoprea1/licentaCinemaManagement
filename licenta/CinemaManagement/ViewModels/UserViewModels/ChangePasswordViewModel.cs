@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CinemaManagement.ViewModels.UserViewModel
+namespace CinemaManagement.ViewModels.UserViewModels
 {
     public class ChangePasswordViewModel
     {
