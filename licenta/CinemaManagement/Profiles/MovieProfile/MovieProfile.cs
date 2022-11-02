@@ -10,6 +10,9 @@ namespace CinemaManagement.Profiles.MovieProfile
         {
             CreateMap<Movie, MovieViewModel>();
             CreateMap<MovieViewModel, Movie>();
+            CreateMap<MovieForCreateViewModel, Movie>();
+            CreateMap<MovieForUpdateViewModel, Movie>();
+
         }
     }
 }

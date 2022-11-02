@@ -24,6 +24,10 @@ namespace CinemaManagement.Infrastructure.Repositories
             _cinemaManagementContext.Genres.Add(genre);
             return genre;
         }
+        public async Task AddGenreToMovieAsync(Movie movie, Genre genre)
+        {
+            movie.Genres.Add(genre);
+        }
         public async Task UpdateGenreAsync(Genre genre)
         {
             _cinemaManagementContext.Genres.Update(genre);
