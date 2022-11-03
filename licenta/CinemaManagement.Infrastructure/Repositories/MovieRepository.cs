@@ -17,14 +17,27 @@ namespace CinemaManagement.Infrastructure.Repositories
                            select m;
             if (!String.IsNullOrEmpty(searchString))
             {
-                movies = movies.Where(s => s.Name!.Contains(searchString));
+                movies = movies
+                    .Include(a => a.Actors)
+                    .Include(g=>g.Genres)
+                    .Include(p => p.Productions)
+                    .Where(s => s.Name!.Contains(searchString));
             }
 
-            return await movies.ToListAsync();
+            return await movies
+                .Include(a=>a.Actors)
+                .Include(g => g.Genres)
+                .Include(p => p.Productions)
+                .ToListAsync();
         }
         public async Task<Movie> GetMovieAsync(Guid movieId)
         {
-            return await _cinemaManagementContext.Movies.Include(g => g.Genres).Where(m => m.Id == movieId).FirstOrDefaultAsync();
+            return await _cinemaManagementContext.Movies
+                .Include(a=>a.Actors)
+                .Include(g => g.Genres)
+                .Include(p=> p.Productions)
+                .Where(m => m.Id == movieId)
+                .FirstOrDefaultAsync();
         }
         public async Task<Movie> CreateMovieAsync(Movie movie)
         {

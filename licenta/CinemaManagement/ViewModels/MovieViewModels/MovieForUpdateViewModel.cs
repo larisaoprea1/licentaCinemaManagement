@@ -1,4 +1,6 @@
-﻿using CinemaManagement.ViewModels.GenreViewModels;
+﻿using CinemaManagement.ViewModels.ActorViewModels;
+using CinemaManagement.ViewModels.GenreViewModels;
+using CinemaManagement.ViewModels.ProductionViewModels;
 
 namespace CinemaManagement.ViewModels.MovieViewModels
 {
@@ -14,8 +16,10 @@ namespace CinemaManagement.ViewModels.MovieViewModels
         public string Poster { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string RunTime { get; set; }
-        public ICollection<GenreViewModel> Genres { get; set; }
-
         public int MovieBudget { get; set; }
+        public ICollection<GenreViewModel> Genres { get; set; }
+        public ICollection<ProductionViewModel> Productions { get; set; }
+        public ICollection<ActorViewModel> Actors { get; set; }
+
     }
 }

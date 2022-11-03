@@ -2,7 +2,7 @@
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.MovieViewModels;
 
-namespace CinemaManagement.Profiles.MovieProfile
+namespace CinemaManagement.Profiles.MovieProfiles
 {
     public class MovieProfile : Profile
     {

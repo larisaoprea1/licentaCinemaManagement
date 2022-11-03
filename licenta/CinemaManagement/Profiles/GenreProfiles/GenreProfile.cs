@@ -2,7 +2,7 @@
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.GenreViewModels;
 
-namespace CinemaManagement.Profiles.GenreProfile
+namespace CinemaManagement.Profiles.GenreProfiles
 {
     public class GenreProfile : Profile
     {

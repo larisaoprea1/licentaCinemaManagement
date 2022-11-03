@@ -1,6 +1,6 @@
 ﻿namespace CinemaManagement.Domain.Models
 {
-    public class Session :BaseModel
+    public class Session : BaseModel
     {
         public DateTime SessionStart { get; set; }  
         public Movie Movie { get; set; }

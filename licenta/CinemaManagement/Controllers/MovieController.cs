@@ -67,7 +67,9 @@ namespace CinemaManagement.Controllers
                 ReleaseDate = movie.ReleaseDate,
                 RunTime = movie.RunTime,
                 MovieBudget = movie.MovieBudget,
-                Genres = new List<Genre>()
+                Actors = new List<Actor>(),
+                Genres = new List<Genre>(),
+                Productions = new List<Production>()
             };
             var result = await _mediator.Send(new CreateMovieCommand
             {

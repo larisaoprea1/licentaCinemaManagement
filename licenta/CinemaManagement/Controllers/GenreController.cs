@@ -33,7 +33,7 @@ namespace CinemaManagement.Controllers
         }
         [HttpGet]
         [Route("getgenre/{genreId}")]
-        public async Task<IActionResult> GetGenreById([FromRoute] Guid genreId)
+        public async Task<IActionResult> GetGenre([FromRoute] Guid genreId)
         {
             var result = await _mediator.Send(new GetGenreByIdQuery
             {
@@ -54,7 +54,7 @@ namespace CinemaManagement.Controllers
                 Genre = genreToCreate,
             });
             var resultMapped = _mapper.Map<GenreViewModel>(result);
-            return Ok(resultMapped);
+            return CreatedAtAction(nameof(GetGenre), new { genreId = genreToCreate.Id }, genreToCreate);
         }
         [HttpPost]
         [Route("addgenre/movie/{movieId}/genre/{genreId}")]

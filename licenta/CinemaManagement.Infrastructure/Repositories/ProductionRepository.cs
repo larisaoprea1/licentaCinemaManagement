@@ -17,7 +17,11 @@ namespace CinemaManagement.Infrastructure.Repositories
         }
         public async Task<Production> GetProductionAsync(Guid productionId)
         {
-            return await _cinemaManagementContext.Productions.Where(p => p.Id == productionId).FirstOrDefaultAsync();
+            return await _cinemaManagementContext.Productions.Include(m => m.Movies).Where(p => p.Id == productionId).FirstOrDefaultAsync();
+        }
+        public async Task AddProductionToMovieAsync(Movie movie, Production production)
+        {
+            movie.Productions.Add(production);
         }
         public async Task<Production> CreateProductionAsync(Production production)
         {
