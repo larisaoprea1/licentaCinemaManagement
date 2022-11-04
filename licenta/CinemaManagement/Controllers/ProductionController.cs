@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using CinemaManagement.Application.Actors.Commands.DeleteActor;
+using CinemaManagement.Application.Genres.Commands.EditGenre;
 using CinemaManagement.Application.Productions.Commands.AddProductionToMovie;
 using CinemaManagement.Application.Productions.Commands.CreateProduction;
+using CinemaManagement.Application.Productions.Commands.DeleteProduction;
+using CinemaManagement.Application.Productions.Commands.EditProduction;
 using CinemaManagement.Application.Productions.Queries.GetAllProductions;
 using CinemaManagement.Application.Productions.Queries.GetProductionById;
 using CinemaManagement.Domain.Models;
+using CinemaManagement.ViewModels.GenreViewModels;
 using CinemaManagement.ViewModels.ProductionViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +73,34 @@ namespace CinemaManagement.Controllers
             });
             var result = _mapper.Map<ProductionViewModel>(productionToAdd);
             return Ok(result);
+        }
+        [HttpPut]
+        [Route("editproduction/{productionId}")]
+        public async Task<ActionResult<ProductionViewModel>> EditProduction([FromRoute] Guid productionId, ProductionForUpdateViewModel production)
+        {
+            var result = await _mediator.Send(new EditProductionCommand
+            {
+                Id = productionId,
+                ProductionName = production.ProductionName,
+                Description= production.Description,    
+
+            });
+            if (result == null)
+            {
+                NotFound("404");
+            }
+            var mapResult = _mapper.Map<ProductionViewModel>(result);
+            return Ok(mapResult);
+        }
+        [HttpDelete]
+        [Route("deleteproduction/{productionId}")]
+        public async Task<IActionResult> DeleteProduction([FromRoute] Guid productionId)
+        {
+            await _mediator.Send(new DeleteProductionCommand
+            {
+                Id = productionId
+            });
+            return Ok("200");
         }
     }
 }

@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using CinemaManagement.Application.Actors.Commands.DeleteActor;
+using CinemaManagement.Application.Actors.Commands.EditActor;
 using CinemaManagement.Application.Genres.Commands.AddGenreToMovie;
 using CinemaManagement.Application.Genres.Commands.CreateGenre;
+using CinemaManagement.Application.Genres.Commands.DeleteGenre;
+using CinemaManagement.Application.Genres.Commands.EditGenre;
 using CinemaManagement.Application.Genres.Queries.GetAllGenres;
 using CinemaManagement.Application.Genres.Queries.GetGenreById;
 using CinemaManagement.Domain.Models;
+using CinemaManagement.ViewModels.ActorViewModels;
 using CinemaManagement.ViewModels.GenreViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +72,33 @@ namespace CinemaManagement.Controllers
             });
             var result = _mapper.Map<GenreViewModel>(genreToAdd);
             return Ok(result);
+        }
+        [HttpPut]
+        [Route("editgenre/{genreId}")]
+        public async Task<ActionResult<GenreViewModel>> EditGenre([FromRoute] Guid genreId, GenreForUpdateViewModel genre)
+        {
+            var result = await _mediator.Send(new EditGenreCommand
+            {
+                Id = genreId,
+                GenreName = genre.GenreName,
+
+            });
+            if (result == null)
+            {
+                NotFound("404");
+            }
+            var mapResult = _mapper.Map<GenreViewModel>(result);
+            return Ok(mapResult);
+        }
+        [HttpDelete]
+        [Route("deletegenre/{genreId}")]
+        public async Task<IActionResult> DeleteGenre([FromRoute] Guid genreId)
+        {
+            await _mediator.Send(new DeleteGenreCommand
+            {
+                Id = genreId
+            });
+            return Ok("200");
         }
     }
 }

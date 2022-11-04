@@ -1,13 +1,18 @@
 ﻿using AutoMapper;
 using CinemaManagement.Application.Actors.Commands.AddActorToMovie;
 using CinemaManagement.Application.Actors.Commands.CreateActor;
+using CinemaManagement.Application.Actors.Commands.DeleteActor;
+using CinemaManagement.Application.Actors.Commands.EditActor;
 using CinemaManagement.Application.Actors.Queries.GetActorsById;
 using CinemaManagement.Application.Actors.Queries.GetAllActors;
 using CinemaManagement.Application.Genres.Queries.GetAllGenres;
 using CinemaManagement.Application.Genres.Queries.GetGenreById;
+using CinemaManagement.Application.Movies.Commands.DeleteMovie;
+using CinemaManagement.Application.Movies.Commands.UpdateMovie;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.ActorViewModels;
 using CinemaManagement.ViewModels.GenreViewModels;
+using CinemaManagement.ViewModels.MovieViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,6 +80,38 @@ namespace CinemaManagement.Controllers
             });
             var result = _mapper.Map<ActorViewModel>(actorToAdd);
             return Ok(result);
+        }
+        [HttpPut]
+        [Route("editactor/{actorId}")]
+        public async Task<ActionResult<ActorViewModel>> EditActor([FromRoute] Guid actorId, ActorForUpdateViewModel actor)
+        {
+            var result = await _mediator.Send(new EditActorCommand
+            {
+                Id = actorId,
+                FirstName = actor.FirstName,
+                LastName = actor.LastName,
+                Nationality = actor.Nationality,
+                Information = actor.Information,
+                BirthDay = actor.BirthDay,
+                PictureSrc = actor.PictureSrc  
+                
+            });
+            if (result == null)
+            {
+                NotFound("404");
+            }
+            var mapResult = _mapper.Map<ActorViewModel>(result);
+            return Ok(mapResult);
+        }
+        [HttpDelete]
+        [Route("deleteactor/{actorId}")]
+        public async Task<IActionResult> DeleteActor([FromRoute] Guid actorId)
+        {
+            await _mediator.Send(new DeleteActorCommand
+            {
+                Id = actorId
+            });
+            return Ok("200");
         }
     }
 }
