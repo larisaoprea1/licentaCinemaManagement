@@ -28,7 +28,18 @@ namespace CinemaManagement.Application.Users.Commands.Register
                 ProfileImageSrc = request.User.ProfileImageSrc,
 
             };
+            
             var result = await _userManager.CreateAsync(usertToCreate, request.Password);
+            
+            var role = await _roleManager.FindByNameAsync("User");
+            if (role == null)
+            {
+                var roleAdded = await _roleManager.CreateAsync(new()
+                {
+                    Name = "User"
+                });
+            }
+          
             var addRoleToUser = await _userManager.AddToRoleAsync(usertToCreate, "User");
             return usertToCreate;
 
