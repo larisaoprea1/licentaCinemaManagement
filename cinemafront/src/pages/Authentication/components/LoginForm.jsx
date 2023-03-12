@@ -1,6 +1,9 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Login } from "../../../api/AuthEndpoints";
+import { useUser } from "../../../context/useUser";
+import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const {
@@ -9,6 +12,9 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm();
 
+  const{setUser, user, setToken} = useUser();
+  const history = useNavigate()
+
   const submit = (data) => {
     const dataToSend = {
       email: data.Email,
@@ -16,8 +22,13 @@ const LoginForm = () => {
     };
 
     Login(dataToSend).then((res) => {
-      console.log("login");
       console.log(res);
+      setToken(res.data.token)
+      setUser(jwt_decode(res.data.token))
+      history("/")
+      localStorage.setItem('jwt', res.data.token)
+    }).catch(()=>{
+      console.log("error")
     });
   };
 
@@ -38,7 +49,6 @@ const LoginForm = () => {
           sx={{ marginBottom: 1, mt: 1 }}
           label="Email"
           name="Email"
-          id="fullWidth outlined-multiline-static"
           {...register("Email", {
             required: { value: true, message: "Email is required" },
           })}
@@ -52,7 +62,6 @@ const LoginForm = () => {
           sx={{ marginBottom: 1 }}
           label="Password"
           name="Password"
-          id="fullWidth outlined-multiline-static"
           {...register("Password", {
             required: { value: true, message: "Password is required" },
           })}

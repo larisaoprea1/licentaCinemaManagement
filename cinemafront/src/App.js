@@ -1,6 +1,7 @@
 import Header from "./components/Header/Header";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppRouter from "./pages/Router/AppRouter";
+import { UserContextProvider } from "./context/useUser";
 
 
 
@@ -25,9 +26,11 @@ function App() {
   
   return (
     <ThemeProvider theme={theme}>
+      <UserContextProvider>
       <div className="App">
         <AppRouter/>
       </div>
+      </UserContextProvider>
     </ThemeProvider>
   );
 }

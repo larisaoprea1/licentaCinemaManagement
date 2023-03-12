@@ -12,14 +12,15 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import LoginIcon from "@mui/icons-material/Login";
 import { Link } from "react-router-dom";
-
-const pages = ["Home", "Movies", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useUser } from "../../context/useUser";
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const { user, setUser } = useUser();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +35,11 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setUser([]);
   };
 
   return (
@@ -88,14 +94,11 @@ function Header() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem onClick={handleCloseNavMenu} component={Link} to={"/"}>
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Movies</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center"></Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -117,56 +120,102 @@ function Header() {
             }}
           ></Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              onClick={handleCloseNavMenu}
+              component={Link}
+              to="/"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Home
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Movies
+            </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+          {!user.IsLoggedIn && (
+            <Box
+              sx={{ flexGrow: 0, display: "flex", justifyContent: "center" }}
             >
-              <MenuItem
-                onClick={handleCloseUserMenu}
+              <Box
                 component={Link}
                 to="/login"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  textDecoration: "none",
+                }}
               >
-                <Typography textAlign="center">Login</Typography>
-              </MenuItem>
-
-              <MenuItem
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Login
+                </Typography>
+                <LoginIcon
+                  sx={{
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                />
+              </Box>
+              <Typography
+                sx={{
+                  marginLeft: "1rem",
+                  textDecoration: "none",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
                 component={Link}
                 to="/register"
-                onClick={handleCloseUserMenu}
               >
-                <Typography textAlign="center">Register</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+                Register
+              </Typography>
+            </Box>
+          )}
+          {user.IsLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src={user.ProfileImage} />
+                </IconButton>
+              </Tooltip>
+
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  onClick={handleCloseUserMenu}
+                  component={Link}
+                  to="/profile"
+                >
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
