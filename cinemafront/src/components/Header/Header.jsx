@@ -134,6 +134,14 @@ function Header() {
             >
               Movies
             </Button>
+            <Button
+              component={Link}
+              to="/admin-panel"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Admin Panel
+            </Button>
           </Box>
 
           {!user.IsLoggedIn && (
