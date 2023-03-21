@@ -16,6 +16,8 @@ namespace CinemaManagement.ViewModels.MovieViewModels
         public string Poster { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string RunTime { get; set; }
+        public DateTime RunDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int MovieBudget { get; set; }
         public ICollection<ActorViewModel> Actors { get; set; }
         public ICollection<GenreViewModel> Genres { get; set; }

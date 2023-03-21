@@ -1,12 +1,12 @@
-import Header from "./components/Header/Header";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppRouter from "./pages/Router/AppRouter";
 import { UserContextProvider } from "./context/useUser";
-
-
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -23,15 +23,29 @@ function App() {
       },
     },
   });
-  
+
   return (
-    <ThemeProvider theme={theme}>
-      <UserContextProvider>
-      <div className="App">
-        <AppRouter/>
-      </div>
-      </UserContextProvider>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <ThemeProvider theme={theme}>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <UserContextProvider>
+          <div className="App">
+            <AppRouter />
+          </div>
+        </UserContextProvider>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

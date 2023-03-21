@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Box, Typography } from "@mui/material";
-import { CreateGenreRequest } from "../../../api/GenreEndpoints";
+import { CreateProductionRequest } from "../../../api/ProductionEndpoints";
 import { toast } from "react-toastify";
 
-const CreateGenre = () => {
+const CreateProduction = () => {
   const {
     register,
     handleSubmit,
@@ -16,12 +16,13 @@ const CreateGenre = () => {
 
   const submit = (data) => {
     const dataToPost = {
-      genreName: data.Name,
+      productionName: data.Name,
+      description: data.Description
     };
 
-    CreateGenreRequest(dataToPost)
+    CreateProductionRequest(dataToPost)
       .then((response) => {
-        toast.success("Genre created!")
+        toast.success("Production created!")
         reset();
       })
       .catch((err) => console.log(err));
@@ -37,7 +38,7 @@ const CreateGenre = () => {
       flexDirection="column"
     >
       <Typography mb={2}>
-        Create Genre
+        Create Production
       </Typography>
       <form
         noValidate
@@ -49,7 +50,7 @@ const CreateGenre = () => {
           fullWidth
           required
           sx={{ marginBottom: 1 }}
-          label="Genre Name"
+          label="Production Name"
           name="Name"
           {...register("Name", {
             required: { value: true, message: "Genre Name is required" },
@@ -57,6 +58,18 @@ const CreateGenre = () => {
           })}
           error={!!errors.Name}
           helperText={errors.Name?.message}
+        />
+        <TextField
+          fullWidth
+          required
+          sx={{ marginBottom: 1 }}
+          label="Description"
+          name="Description"
+          {...register("Description", {
+            required: { value: true, message: "Description is required" },
+          })}
+          error={!!errors.Description}
+          helperText={errors.Description?.message}
         />
         <Button onClick={() => reset()}>Reset</Button>
         <Button type="submit" variant="contained">
@@ -67,4 +80,4 @@ const CreateGenre = () => {
   );
 };
 
-export default CreateGenre;
+export default CreateProduction;

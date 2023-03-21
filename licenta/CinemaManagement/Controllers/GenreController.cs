@@ -44,7 +44,8 @@ namespace CinemaManagement.Controllers
             {
                 Id = genreId
             });
-            return Ok(result);
+            var genre = _mapper.Map<GenreViewModel>(result);
+            return Ok(genre);
         }
         [HttpPost]
         [Route("creategenre")]
