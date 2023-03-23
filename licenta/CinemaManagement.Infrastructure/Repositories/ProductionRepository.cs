@@ -1,6 +1,7 @@
 ﻿using CinemaManagement.Application.Interfaces;
 using CinemaManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace CinemaManagement.Infrastructure.Repositories
 {
@@ -11,9 +12,18 @@ namespace CinemaManagement.Infrastructure.Repositories
         {
             _cinemaManagementContext = cinemaManagementContext;
         }
-        public async Task<IEnumerable<Production>> GetProductionsAsync()
+        public async Task<IEnumerable<Production>> GetProductionsAsync(int? page, int pageSize)
+        {
+            int pageNumber = (page ?? 1);
+            return await _cinemaManagementContext.Productions.ToPagedListAsync(pageNumber, pageSize);
+        }
+        public async Task<IEnumerable<Production>> GetProductionsWithoutPagination()
         {
             return await _cinemaManagementContext.Productions.ToListAsync();
+        }
+        public async Task<ICollection<Production>> GetProductionsById(List<Guid> ids)
+        {
+            return await _cinemaManagementContext.Productions.Where(production => ids.Contains(production.Id)).ToListAsync();
         }
         public async Task<Production> GetProductionAsync(Guid productionId)
         {
@@ -36,6 +46,11 @@ namespace CinemaManagement.Infrastructure.Repositories
         {
             _cinemaManagementContext.Productions.Remove(production);
         }
+        public async Task<int> CountAsync()
+        {
+            return await _cinemaManagementContext.Productions.CountAsync();
+        }
+
         public async Task SaveAsync()
         {
             await _cinemaManagementContext.SaveChangesAsync();

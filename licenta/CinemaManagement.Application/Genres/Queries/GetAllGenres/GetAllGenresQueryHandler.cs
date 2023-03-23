@@ -13,7 +13,7 @@ namespace CinemaManagement.Application.Genres.Queries.GetAllGenres
         }
         public async Task<IEnumerable<Genre>> Handle(GetAllGenresQuery request, CancellationToken cancellationToken)
         {
-            return await _genreRepository.GetGenresAsync();
+            return await _genreRepository.GetGenresAsync(request.Page, request.PageSize);
         }
     }
 }

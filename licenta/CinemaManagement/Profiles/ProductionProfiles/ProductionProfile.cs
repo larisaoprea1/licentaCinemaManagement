@@ -9,6 +9,7 @@ namespace CinemaManagement.Profiles.ProductionProfiles
         public ProductionProfile()
         {
             CreateMap<Production, ProductionViewModel>();
+            CreateMap<Production, ProductionForPopulateViewModel>();
             CreateMap<ProductionViewModel, Production>();
             CreateMap<ProductionForCreateViewModel, Production>();
             //CreateMap<MovieForUpdateViewModel, Movie>();

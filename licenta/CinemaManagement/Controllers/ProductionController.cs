@@ -5,7 +5,9 @@ using CinemaManagement.Application.Productions.Commands.AddProductionToMovie;
 using CinemaManagement.Application.Productions.Commands.CreateProduction;
 using CinemaManagement.Application.Productions.Commands.DeleteProduction;
 using CinemaManagement.Application.Productions.Commands.EditProduction;
+using CinemaManagement.Application.Productions.Queries.CountProductionsQuery.cs;
 using CinemaManagement.Application.Productions.Queries.GetAllProductions;
+using CinemaManagement.Application.Productions.Queries.GetAllProductionsWithoutPagination.cs;
 using CinemaManagement.Application.Productions.Queries.GetProductionById;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.GenreViewModels;
@@ -29,11 +31,29 @@ namespace CinemaManagement.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet]
-        [Route("productions")]
-        public async Task<IActionResult> GetProductions()
+        [Route("productions/page/{page}/pagesize/{pageSize}")]
+        public async Task<IActionResult> GetProductions(int page, int pageSize)
         {
-            var productions = await _mediator.Send(new GetAllProductionsQuery());
+            var productions = await _mediator.Send(new GetAllProductionsQuery
+            {
+                Page = page,
+                PageSize = pageSize,
+            });
+
+            var count = await _mediator.Send(new CountProductionsQuery());
+            var totalPages = ((double)count / (double)pageSize);
+            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
             var result = _mapper.Map<IEnumerable<ProductionViewModel>>(productions);
+            return Ok(new PagedResponse<IEnumerable<ProductionViewModel>>(result, page, count, roundedTotalPages, pageSize));
+
+        }
+        [HttpGet]
+        [Route("populateproductions")]
+        public async Task<IActionResult> GetPopulateProductions()
+        {
+            var productions = await _mediator.Send(new GetAllProductionsWithoutPaginationQuery());
+            var result = _mapper.Map<IEnumerable<ProductionForPopulateViewModel>>(productions);
             return Ok(result);
         }
         [HttpGet]

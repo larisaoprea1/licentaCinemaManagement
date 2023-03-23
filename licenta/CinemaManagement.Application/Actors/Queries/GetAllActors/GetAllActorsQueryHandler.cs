@@ -14,7 +14,7 @@ namespace CinemaManagement.Application.Actors.Queries.GetAllActors
 
         public async Task<IEnumerable<Actor>> Handle(GetAllActorsQuery request, CancellationToken cancellationToken)
         {
-            return await _actorRepository.GetActorsAsync();
+            return await _actorRepository.GetActorsAsync(request.Page, request.PageSize);
         }
     }
 }

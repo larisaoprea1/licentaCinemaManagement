@@ -14,7 +14,7 @@ namespace CinemaManagement.Application.Productions.Queries.GetAllProductions
 
         public async Task<IEnumerable<Production>> Handle(GetAllProductionsQuery request, CancellationToken cancellationToken)
         {
-            return await _productionRepository.GetProductionsAsync();
+            return await _productionRepository.GetProductionsAsync(request.Page, request.PageSize);
         }
     }
 }

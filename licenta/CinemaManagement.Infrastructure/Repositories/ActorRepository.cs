@@ -1,6 +1,7 @@
 ﻿using CinemaManagement.Application.Interfaces;
 using CinemaManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace CinemaManagement.Infrastructure.Repositories
 {
@@ -11,9 +12,18 @@ namespace CinemaManagement.Infrastructure.Repositories
         {
             _cinemaManagementContext = cinemaManagementContext;
         }
-        public async Task<IEnumerable<Actor>> GetActorsAsync()
+        public async Task<IEnumerable<Actor>> GetActorsAsync(int? page, int pageSize)
+        {
+            int pageNumber = (page ?? 1);
+            return await _cinemaManagementContext.Actors.ToPagedListAsync(pageNumber, pageSize);
+        }
+        public async Task<IEnumerable<Actor>> GetActorsWithoutPagination()
         {
             return await _cinemaManagementContext.Actors.ToListAsync();
+        }
+        public async Task<ICollection<Actor>> GetActorsById(List<Guid> ids)
+        {
+            return await _cinemaManagementContext.Actors.Where(actor => ids.Contains(actor.Id)).ToListAsync();
         }
         public async Task<Actor> GetActorAsync(Guid actorId)
         {
@@ -35,6 +45,10 @@ namespace CinemaManagement.Infrastructure.Repositories
          public void DeleteActor(Actor actor)
         {
             _cinemaManagementContext.Actors.Remove(actor);
+        }
+        public async Task<int> CountAsync()
+        {
+            return await _cinemaManagementContext.Actors.CountAsync();
         }
         public async Task SaveAsync()
         {

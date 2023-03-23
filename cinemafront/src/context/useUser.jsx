@@ -20,7 +20,6 @@ export function UserContextProvider({ children }) {
     setToken,
   };
 
-  console.log(user)
   useEffect(() => {
     if (localStorage.getItem("jwt")) {
       setUser(jwt_decode(localStorage.getItem("jwt")));

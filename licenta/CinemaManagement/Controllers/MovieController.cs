@@ -2,6 +2,7 @@
 using CinemaManagement.Application.Movies.Commands.CreateMovie;
 using CinemaManagement.Application.Movies.Commands.DeleteMovie;
 using CinemaManagement.Application.Movies.Commands.UpdateMovie;
+using CinemaManagement.Application.Movies.Queries.GetAiringMovies;
 using CinemaManagement.Application.Movies.Queries.GetAllMovies;
 using CinemaManagement.Application.Movies.Queries.GetMovieById;
 using CinemaManagement.Domain.Models;
@@ -35,6 +36,19 @@ namespace CinemaManagement.Controllers
             var movies = _mapper.Map<IEnumerable<MovieViewModel>>(result);
             return Ok(movies);
         }
+
+        [HttpGet]
+        [Route("airingmovies")]
+        public async Task<IActionResult> GetAiringMovies([FromQuery] string? searchMovies)
+        {
+            var result = await _mediator.Send(new GetAiringMoviesQuery
+            {
+                SearchString = searchMovies
+            });
+            var movies = _mapper.Map<IEnumerable<MovieViewModel>>(result);
+            return Ok(movies);
+        }
+
         [HttpGet]
         [Route("movieId/{movieId}")]
         public async Task<IActionResult> GetMovie([FromRoute] Guid movieId)
@@ -67,16 +81,20 @@ namespace CinemaManagement.Controllers
                 ReleaseDate = movie.ReleaseDate,
                 RunTime = movie.RunTime,
                 MovieBudget = movie.MovieBudget,
-                Actors = new List<Actor>(),
-                Genres = new List<Genre>(),
-                Productions = new List<Production>()
+                RunDate = movie.RunDate,
+                EndDate = movie.EndDate,
             };
+
             var result = await _mediator.Send(new CreateMovieCommand
             {
-                Movie = movieToCreate
+                Movie = movieToCreate,
+                Genres = movie.Genres,
+                Productions = movie.Productions,
+                Actors = movie.Actors,
             });
+
             var createdMovieToReturn = _mapper.Map<MovieViewModel>(result);
-            return CreatedAtAction(nameof(GetMovie), new { movieId = movieToCreate.Id }, movieToCreate);
+            return CreatedAtAction(nameof(GetMovie), new { movieId = createdMovieToReturn.Id }, createdMovieToReturn);
             
         }
         [HttpPut]

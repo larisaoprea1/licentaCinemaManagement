@@ -8,7 +8,7 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 
 const Accordion = styled((props) => (
@@ -51,25 +51,24 @@ export default function CustomDrawer(props) {
       sx={{ height: "calc(100vh - 68.5px)", borderRight: "1px solid purple" }}
     >
       <Accordion>
-        <AccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>Movies</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container direction="column">
-            <MenuItem>
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("create-movie");
+              }}
+            >
               <Typography>Create Movie</Typography>
             </MenuItem>
           </Grid>
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>Genres</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -94,10 +93,7 @@ export default function CustomDrawer(props) {
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>Actors</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -113,7 +109,7 @@ export default function CustomDrawer(props) {
             <MenuItem
               onClick={() => {
                 // props.setOpen(false);
-                navigate("actor-list");
+                navigate("actors-list");
               }}
             >
               <Typography>Actors List</Typography>
@@ -122,21 +118,25 @@ export default function CustomDrawer(props) {
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>Productions</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container direction="column">
-            <MenuItem      onClick={() => {
+            <MenuItem
+              onClick={() => {
                 // props.setOpen(false);
                 navigate("create-production");
-              }}>
+              }}
+            >
               <Typography>Create Production</Typography>
             </MenuItem>
-            <MenuItem>
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("productions-list");
+              }}
+            >
               <Typography>Production List</Typography>
             </MenuItem>
           </Grid>
@@ -144,7 +144,6 @@ export default function CustomDrawer(props) {
       </Accordion>
     </Box>
   );
-  console.log(props.open);
   return (
     <div>
       <Box sx={{ display: { xs: "none", lg: "block" } }}>{list()}</Box>

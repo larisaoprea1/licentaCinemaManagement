@@ -3,8 +3,10 @@ using CinemaManagement.Application.Actors.Commands.AddActorToMovie;
 using CinemaManagement.Application.Actors.Commands.CreateActor;
 using CinemaManagement.Application.Actors.Commands.DeleteActor;
 using CinemaManagement.Application.Actors.Commands.EditActor;
+using CinemaManagement.Application.Actors.Queries.CountActors;
 using CinemaManagement.Application.Actors.Queries.GetActorsById;
 using CinemaManagement.Application.Actors.Queries.GetAllActors;
+using CinemaManagement.Application.Actors.Queries.GetAllActorsWithoutPagination;
 using CinemaManagement.Application.Genres.Queries.GetAllGenres;
 using CinemaManagement.Application.Genres.Queries.GetGenreById;
 using CinemaManagement.Application.Movies.Commands.DeleteMovie;
@@ -32,13 +34,32 @@ namespace CinemaManagement.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet]
-        [Route("actors")]
-        public async Task<IActionResult> GetActors()
+        [Route("actors/page/{page}/pagesize/{pageSize}")]
+        public async Task<IActionResult> GetActors(int page, int pageSize)
         {
-            var actors = await _mediator.Send(new GetAllActorsQuery());
+            var actors = await _mediator.Send(new GetAllActorsQuery
+            {
+                Page = page,
+                PageSize = pageSize
+            });
+
+            var count = await _mediator.Send(new CountActorsQuery());
+            var totalPages = ((double)count / (double)pageSize);
+            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
             var result = _mapper.Map<IEnumerable<ActorViewModel>>(actors);
+            return Ok(new PagedResponse<IEnumerable<ActorViewModel>>(result, page, count, roundedTotalPages, pageSize));
+        }
+
+        [HttpGet]
+        [Route("populateactors")]
+        public async Task<IActionResult> GetPopulateActors()
+        {
+            var actors = await _mediator.Send(new GetAllActorsWithoutPaginationQuery());
+            var result = _mapper.Map<IEnumerable<ActorForPopulateViewModel>>(actors);
             return Ok(result);
         }
+
         [HttpGet]
         [Route("getactor/{actorId}")]
         public async Task<IActionResult> GetActor([FromRoute] Guid actorId)

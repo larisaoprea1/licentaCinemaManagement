@@ -22,7 +22,6 @@ const LoginForm = () => {
     };
 
     Login(dataToSend).then((res) => {
-      console.log(res);
       setToken(res.data.token)
       setUser(jwt_decode(res.data.token))
       history("/")

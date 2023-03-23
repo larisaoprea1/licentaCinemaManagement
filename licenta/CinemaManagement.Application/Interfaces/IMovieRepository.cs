@@ -10,5 +10,6 @@ namespace CinemaManagement.Application.Interfaces
         Task UpdateMovieAsync(Movie movie);
         void DeleteMovie(Movie movie);
         Task SaveAsync();
+        Task<IEnumerable<Movie>> GetAiringMovies(string searchString);
     }
 }

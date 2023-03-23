@@ -30,6 +30,27 @@ namespace CinemaManagement.Infrastructure.Repositories
                 .Include(p => p.Productions)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Movie>> GetAiringMovies(string searchString)
+        {
+            var movies = from m in _cinemaManagementContext.Movies
+                         select m;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies
+                    .Include(a => a.Actors)
+                    .Include(g => g.Genres)
+                    .Include(p => p.Productions)
+                    .Where(s => s.Name!.Contains(searchString));
+            }
+
+            return await movies
+                .Include(a => a.Actors)
+                .Include(g => g.Genres)
+                .Include(p => p.Productions)
+                .Where(m => m.RunDate <= DateTime.Now && m.EndDate >= DateTime.Now)
+                .ToListAsync();
+        }
+
         public async Task<Movie> GetMovieAsync(Guid movieId)
         {
             return await _cinemaManagementContext.Movies

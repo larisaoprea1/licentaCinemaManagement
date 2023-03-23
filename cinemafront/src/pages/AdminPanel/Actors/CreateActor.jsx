@@ -20,11 +20,8 @@ const CreateActor = () => {
     },
   });
 
-  console.log(errors);
 
   const submit = (data) => {
-    console.log(data);
-
     const dataToPost = {
       firstName: data.FirstName,
       lastName: data.LastName,

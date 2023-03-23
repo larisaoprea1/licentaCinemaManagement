@@ -7,8 +7,13 @@ export const CreateGenreRequest = async (data) => {
   return response;
 };
 
-export const GetGenres = async () => {
-  const response = await axiosInstance.get(`${API_URL}/genres`);
+export const GetGenres = async (page) => {
+  const response = await axiosInstance.get(`${API_URL}/genres/page/${page}/pagesize/10`);
+  return response;
+};
+
+export const GetPopulateGenres = async () => {
+  const response = await axiosInstance.get(`${API_URL}/populategenres`);
   return response;
 };
 

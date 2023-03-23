@@ -18,20 +18,24 @@ import {
   GetGenres,
 } from "../../../api/GenreEndpoints";
 import { CustomTableCell } from "../../../components/Table/CustomTableCell";
+import { CustomTablePagination } from "../../../components/Table/CustomTablePagination";
 
 const GenreList = () => {
   const [rows, setRows] = useState([]);
   const [previous, setPrevious] = useState({});
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(1);
 
   const getGenres = () => {
-    GetGenres().then((res) => {
-      setRows(res.data);
+    GetGenres(page).then((res) => {
+      setRows(res.data.data);
+      setTotalCount(res.data.totalRecords);
     });
   };
 
   useEffect(() => {
     getGenres();
-  }, []);
+  }, [page]);
 
   //table functions
   const onToggleEditMode = (id) => {
@@ -95,9 +99,8 @@ const GenreList = () => {
       getGenres();
     });
   };
-
   return (
-    <Box sx={{ mt: 3 }}>
+    <Box sx={{ mt: 2, mb: 1 }}>
       <Paper>
         <Table>
           <TableHead>
@@ -150,6 +153,11 @@ const GenreList = () => {
               </TableRow>
             ))}
           </TableBody>
+          <CustomTablePagination
+            page={page}
+            setPage={setPage}
+            count={totalCount}
+          />
         </Table>
       </Paper>
     </Box>

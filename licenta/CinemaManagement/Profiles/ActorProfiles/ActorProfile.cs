@@ -11,6 +11,8 @@ namespace CinemaManagement.Profiles.ActorProfiles
             CreateMap<Actor, ActorViewModel>();
             CreateMap<ActorViewModel, Actor>();
             CreateMap<ActorForCreateViewModel, Actor>();
+            CreateMap<Actor, ActorForPopulateViewModel>();
+
         }
     }
 }

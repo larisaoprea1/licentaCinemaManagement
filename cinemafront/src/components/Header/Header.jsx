@@ -136,7 +136,7 @@ function Header() {
             </Button>
             <Button
               component={Link}
-              to="/admin-panel"
+              to="/admin-panel/create-movie"
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >

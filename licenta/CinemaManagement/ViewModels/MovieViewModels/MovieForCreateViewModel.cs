@@ -1,8 +1,4 @@
-﻿using CinemaManagement.ViewModels.ActorViewModels;
-using CinemaManagement.ViewModels.GenreViewModels;
-using CinemaManagement.ViewModels.ProductionViewModels;
-
-namespace CinemaManagement.ViewModels.MovieViewModels
+﻿namespace CinemaManagement.ViewModels.MovieViewModels
 {
     public class MovieForCreateViewModel
     {
@@ -19,9 +15,9 @@ namespace CinemaManagement.ViewModels.MovieViewModels
         public DateTime RunDate { get; set; }
         public DateTime EndDate { get; set; }
         public int MovieBudget { get; set; }
-        public ICollection<ActorViewModel> Actors { get; set; }
-        public ICollection<GenreViewModel> Genres { get; set; }
-        public ICollection<ProductionViewModel> Productions { get; set; }
+        public List<Guid>? Actors { get; set; }
+        public List<Guid>? Genres { get; set; }
+        public List<Guid>? Productions { get; set; }
 
     }
 }

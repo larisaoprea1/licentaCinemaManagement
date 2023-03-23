@@ -5,7 +5,9 @@ using CinemaManagement.Application.Genres.Commands.AddGenreToMovie;
 using CinemaManagement.Application.Genres.Commands.CreateGenre;
 using CinemaManagement.Application.Genres.Commands.DeleteGenre;
 using CinemaManagement.Application.Genres.Commands.EditGenre;
+using CinemaManagement.Application.Genres.Queries.CountGenres;
 using CinemaManagement.Application.Genres.Queries.GetAllGenres;
+using CinemaManagement.Application.Genres.Queries.GetAllGenresWithoutPagination;
 using CinemaManagement.Application.Genres.Queries.GetGenreById;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.ActorViewModels;
@@ -29,13 +31,32 @@ namespace CinemaManagement.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet]
-        [Route("genres")]
-        public async Task<IActionResult> GetGenres()
+        [Route("genres/page/{page}/pagesize/{pageSize}")]
+        public async Task<IActionResult> GetGenres(int page, int pageSize)
         {
-            var result = await _mediator.Send(new GetAllGenresQuery());
+            var result = await _mediator.Send(new GetAllGenresQuery
+            {
+                Page = page,
+                PageSize = pageSize,
+            });
+
+            var count = await _mediator.Send(new CountGenresQuery());
+            var totalPages = ((double)count / (double)pageSize);
+            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
+            var genres = _mapper.Map<IEnumerable<GenreViewModel>>(result);
+            return Ok(new PagedResponse<IEnumerable<GenreViewModel>>(genres, page, count, roundedTotalPages, pageSize));
+        }
+
+        [HttpGet]
+        [Route("populategenres")]
+        public async Task<IActionResult> GetPopulateGenres()
+        {
+            var result = await _mediator.Send(new GetAllGenresWithoutPaginationQuery());
             var genres = _mapper.Map<IEnumerable<GenreViewModel>>(result);
             return Ok(genres);
         }
+
         [HttpGet]
         [Route("getgenre/{genreId}")]
         public async Task<IActionResult> GetGenre([FromRoute] Guid genreId)
