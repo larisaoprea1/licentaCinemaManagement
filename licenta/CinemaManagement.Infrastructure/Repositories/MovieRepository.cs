@@ -1,6 +1,7 @@
 ﻿using CinemaManagement.Application.Interfaces;
 using CinemaManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace CinemaManagement.Infrastructure.Repositories
 {
@@ -49,6 +50,45 @@ namespace CinemaManagement.Infrastructure.Repositories
                 .Include(p => p.Productions)
                 .Where(m => m.RunDate <= DateTime.Now && m.EndDate >= DateTime.Now)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Movie>> GetMoviesPaginatedAsync(int? page, int pageSize, string searchString)
+        {
+            var movies = from m in _cinemaManagementContext.Movies
+                         select m;
+            int pageNumber = (page ?? 1);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies
+                    .Include(a => a.Actors)
+                    .Include(g => g.Genres)
+                    .Include(p => p.Productions)
+                    .Where(s => s.Name!.Contains(searchString));
+            }
+
+            return await movies
+                .Include(a => a.Actors)
+                .Include(g => g.Genres)
+                .Include(p => p.Productions)
+                .ToPagedListAsync(pageNumber, pageSize);
+        }
+
+        public async Task<int> CountAsync(string searchString)
+        {
+            var movies = from m in _cinemaManagementContext.Movies
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies
+                    .Include(a => a.Actors)
+                    .Include(g => g.Genres)
+                    .Include(p => p.Productions)
+                    .Where(s => s.Name!.Contains(searchString));
+            }
+
+            return await movies.CountAsync();
         }
 
         public async Task<Movie> GetMovieAsync(Guid movieId)

@@ -11,6 +11,8 @@ import LoginPage from "../Authentication/LoginPage";
 import RegisterPage from "../Authentication/RegisterPage";
 import HomePage from "../HomePage/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
+import Movies from "../Movies/Movies";
+import MoviePage from "../MoviePage/MoviePage";
 
 const AppRouter = () => {
   return (
@@ -20,10 +22,16 @@ const AppRouter = () => {
           <Route path="/" element={<HomePage />} />
         </Route>
         <Route element={<ProtectedRoute />}>
+          <Route path="/movies" element={<Movies />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
           <Route path="/login" element={<LoginPage />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/register" element={<RegisterPage />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/movie/:movieId" element={<MoviePage/>} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/admin-panel" element={<AdminPanel />}>

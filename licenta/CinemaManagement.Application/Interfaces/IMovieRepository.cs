@@ -11,5 +11,7 @@ namespace CinemaManagement.Application.Interfaces
         void DeleteMovie(Movie movie);
         Task SaveAsync();
         Task<IEnumerable<Movie>> GetAiringMovies(string searchString);
+        Task<IEnumerable<Movie>> GetMoviesPaginatedAsync(int? page, int pageSize, string searchString);
+        Task<int> CountAsync(string searchString);
     }
 }

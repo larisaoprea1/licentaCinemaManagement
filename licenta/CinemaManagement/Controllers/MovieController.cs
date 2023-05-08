@@ -5,6 +5,8 @@ using CinemaManagement.Application.Movies.Commands.UpdateMovie;
 using CinemaManagement.Application.Movies.Queries.GetAiringMovies;
 using CinemaManagement.Application.Movies.Queries.GetAllMovies;
 using CinemaManagement.Application.Movies.Queries.GetMovieById;
+using CinemaManagement.Application.Movies.Queries.GetMoviesPaginated;
+using CinemaManagement.Application.Movies.Queries.CountMovies;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.MovieViewModels;
 using MediatR;
@@ -63,6 +65,24 @@ namespace CinemaManagement.Controllers
             }
             var movie = _mapper.Map<MovieViewModel>(result);
             return Ok(movie);
+        }
+
+        [HttpGet]
+        [Route("paginatedmovies/page/{page}/page-size/{pageSize}")]
+        public async Task<IActionResult> GetMoviesPaginated(int page, int pageSize, string? searchString = null)
+        {
+            var result = await _mediator.Send(new GetMoviesPaginatedQuery
+            {
+                Page = page,
+                PageSize = pageSize,
+                SearchString = searchString
+            });
+
+            var count = await _mediator.Send(new CountMoviesQuery { SearchString= searchString });
+            var totalPages = ((double)count / (double)pageSize);
+            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+            var mappedResult = _mapper.Map<IEnumerable<MovieViewModel>>(result);
+            return Ok(new PagedResponse<IEnumerable<MovieViewModel>>(mappedResult, page, count, roundedTotalPages, pageSize));
         }
         [HttpPost]
         [Route("addmovie")]
