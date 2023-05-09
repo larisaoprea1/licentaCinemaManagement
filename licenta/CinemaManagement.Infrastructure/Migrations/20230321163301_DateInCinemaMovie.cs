@@ -9,7 +9,7 @@ namespace CinemaManagement.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
+            /*migrationBuilder.AddColumn<DateTime>(
                 name: "EndDate",
                 table: "Movies",
                 type: "datetime2",
@@ -21,7 +21,7 @@ namespace CinemaManagement.Infrastructure.Migrations
                 table: "Movies",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));*/
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

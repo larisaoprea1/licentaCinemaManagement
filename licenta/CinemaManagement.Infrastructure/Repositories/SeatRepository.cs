@@ -19,7 +19,7 @@ namespace CinemaManagement.Infrastructure.Repositories
         {
             return await _cinemaManagementContext.Seats.Where(s => s.Id == seatId).FirstOrDefaultAsync();
         }
-        public async Task<Seat> CreateProductionAsync(Seat seat)
+        public async Task<Seat> CreateSeatAsync(Seat seat)
         {
             _cinemaManagementContext.Seats.Add(seat);
             return seat;

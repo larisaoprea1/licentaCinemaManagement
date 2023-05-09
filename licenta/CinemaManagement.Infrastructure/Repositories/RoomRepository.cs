@@ -1,6 +1,7 @@
 ﻿using CinemaManagement.Application.Interfaces;
 using CinemaManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace CinemaManagement.Infrastructure.Repositories
 {
@@ -11,15 +12,20 @@ namespace CinemaManagement.Infrastructure.Repositories
         {
             _cinemaManagementContext = cinemaManagementContext;
         }
-        public async Task<IEnumerable<Room>> GetRoomsAsync()
+        public async Task<IEnumerable<Room>> GetRoomsWithoutPagination()
         {
-            return await _cinemaManagementContext.Rooms.ToListAsync();
+            return await _cinemaManagementContext.Rooms.Include(c => c.Cinema).Include(s => s.Seats).ToListAsync();
+        }
+        public async Task<IEnumerable<Room>> GetRoomsAsync(int? page, int pageSize)
+        {
+            int pageNumber = (page ?? 1);
+            return await _cinemaManagementContext.Rooms.Include(c => c.Cinema).Include(s => s.Seats).ToPagedListAsync(pageNumber, pageSize);
         }
         public async Task<Room> GetRoomAsync(Guid roomId)
         {
-            return await _cinemaManagementContext.Rooms.Where(r => r.Id == roomId).FirstOrDefaultAsync();
+            return await _cinemaManagementContext.Rooms.Include(c => c.Cinema).Include(s => s.Seats).Where(r => r.Id == roomId).FirstOrDefaultAsync();
         }
-        public async Task<Room> CreateProductionAsync(Room room)
+        public async Task<Room> CreateRoomAsync(Room room)
         {
             _cinemaManagementContext.Rooms.Add(room);
             return room;
@@ -31,6 +37,10 @@ namespace CinemaManagement.Infrastructure.Repositories
         public void DeleteRoom(Room room)
         {
             _cinemaManagementContext.Rooms.Remove(room);
+        }
+        public async Task<int> CountAsync()
+        {
+            return await _cinemaManagementContext.Rooms.CountAsync();
         }
         public async Task SaveAsync()
         {

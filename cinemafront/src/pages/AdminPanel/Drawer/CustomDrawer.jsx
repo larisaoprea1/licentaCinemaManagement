@@ -52,6 +52,56 @@ export default function CustomDrawer(props) {
     >
       <Accordion>
         <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+          <Typography>Cinemas</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container direction="column">
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("create-cinema");
+              }}
+            >
+              <Typography>Create Cinema</Typography>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("cinemas-list");
+              }}
+            >
+              <Typography>Cinema List</Typography>
+            </MenuItem>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+          <Typography>Rooms</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container direction="column">
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("create-room");
+              }}
+            >
+              <Typography>Create Room</Typography>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("rooms-list");
+              }}
+            >
+              <Typography>Rooms List</Typography>
+            </MenuItem>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>Movies</Typography>
         </AccordionSummary>
         <AccordionDetails>

@@ -6,7 +6,7 @@ namespace CinemaManagement.Application.Interfaces
     {
         Task<IEnumerable<Seat>> GetSeatsAsync();
         Task<Seat> GetSeatAsync(Guid seatId);
-        Task<Seat> CreateProductionAsync(Seat seat);
+        Task<Seat> CreateSeatAsync(Seat seat);
         Task UpdateSeatAsync(Seat seat);
         void DeleteSeat(Seat seat);
         Task SaveAsync();

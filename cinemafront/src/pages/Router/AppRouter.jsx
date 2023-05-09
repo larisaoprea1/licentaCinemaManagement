@@ -13,6 +13,9 @@ import HomePage from "../HomePage/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
 import Movies from "../Movies/Movies";
 import MoviePage from "../MoviePage/MoviePage";
+import CinemaList from "../AdminPanel/Cinemas/CinemaList";
+import CreateCinema from "../AdminPanel/Cinemas/CreateCinema";
+import CreateRoom from "../AdminPanel/Rooms/CreateRoom";
 
 const AppRouter = () => {
   return (
@@ -35,8 +38,11 @@ const AppRouter = () => {
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/admin-panel" element={<AdminPanel />}>
+            <Route path="create-cinema" element={<CreateCinema />} />
+            <Route path="create-room" element={<CreateRoom />} />
             <Route path="create-movie" element={<CreateMovie />} />
             <Route path="create-genre" element={<CreateGenre />} />
+            <Route path="cinemas-list" element={<CinemaList />} />
             <Route path="genres-list" element={<GenreList />} />
             <Route path="create-production" element={<CreateProduction />} />
             <Route path="productions-list" element={<ProductionList />} />

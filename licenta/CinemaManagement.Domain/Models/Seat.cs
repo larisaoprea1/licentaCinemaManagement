@@ -2,7 +2,7 @@
 {
     public class Seat : BaseModel
     {
-        public int Row { get; set; }
+        public string Row { get; set; }
         public int Number { get; set; } 
         public Room Room{ get; set; }
         public Guid RoomId { get; set; }
