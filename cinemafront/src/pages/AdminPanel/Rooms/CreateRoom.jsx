@@ -2,12 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Box, Grid, MenuItem, Typography } from "@mui/material";
+import { Box, Grid, MenuItem, Typography, Divider } from "@mui/material";
 import { toast } from "react-toastify";
 import { CreateRoomRequest } from "../../../api/RoomsEndpoints";
 import { GetPopulateCinemas } from "../../../api/CinemasEndpoints";
 import { useState } from "react";
 import { useEffect } from "react";
+import RowInput from "./RowInput";
 
 const CreateRoom = () => {
   const {
@@ -18,19 +19,28 @@ const CreateRoom = () => {
   } = useForm();
 
   const [cinemas, setCinemas] = useState([]);
+  const [rows, setRows] = useState([{ row: "A", number: 0 }]);
 
   const submit = (data) => {
+    const newRows = rows.flatMap(({ row, number }) =>
+      Array.from({ length: number }, (_, index) => ({
+        row,
+        number: index + 1,
+      }))
+    );
+
     const dataToPost = {
       name: data.Name,
+      cinemaId: data.Cinema,
+      seats: newRows,
     };
 
-    console.log(data)
-    // CreateRoomRequest(dataToPost)
-    //   .then((response) => {
-    //     toast.success("Room created!");
-    //     reset();
-    //   })
-    //   .catch((err) => console.log(err));
+    CreateRoomRequest(dataToPost)
+      .then((response) => {
+        toast.success("Room created!");
+        resetForm()
+      })
+      .catch((err) => console.log(err));
   };
 
   const getCinemas = () => {
@@ -38,6 +48,23 @@ const CreateRoom = () => {
       setCinemas(res.data);
     });
   };
+
+  function handleNewRow(row) {
+    console.log("New row added:", row);
+  }
+
+  function handleRemoveRow(row) {
+    console.log("Row removed:", row);
+  }
+
+  const resetForm = () => {
+    reset();
+    removeAll();
+  };
+
+  function removeAll() {
+    setRows([{ row: "A", number: 0 }]);
+  }
 
   useEffect(() => {
     getCinemas();
@@ -55,7 +82,7 @@ const CreateRoom = () => {
       <form
         noValidate
         autoComplete="off"
-        style={{ marginBottom: 20 }}
+        style={{ marginBottom: 20, width: "100%" }}
         onSubmit={handleSubmit(submit)}
       >
         <Grid container spacing={2}>
@@ -79,7 +106,7 @@ const CreateRoom = () => {
             <TextField
               select
               fullWidth
-              label="Select"
+              label="Select Cinema"
               defaultValue=""
               inputProps={register("Cinema", {
                 required: "Please enter Cinema",
@@ -94,12 +121,26 @@ const CreateRoom = () => {
               ))}
             </TextField>
           </Grid>
-        </Grid>
 
-        <Button onClick={() => reset()}>Reset</Button>
-        <Button type="submit" variant="contained">
-          Submit
-        </Button>
+          <Grid item xs={12} sx={{ justifyContent: "center", display: "flex" }}>
+            <Typography sx={{ fontWeight: "bold" }}>Room Seats</Typography>
+          </Grid>
+
+          <Grid item xs={12} sx={{ width: "100%" }}>
+            <RowInput
+              onAddRow={handleNewRow}
+              rows={rows}
+              setRows={setRows}
+              onRemoveRow={handleRemoveRow}
+            />
+          </Grid>
+          <Divider />
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </Box>
   );

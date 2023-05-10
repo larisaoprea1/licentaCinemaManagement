@@ -21,6 +21,10 @@ namespace CinemaManagement.Infrastructure.Repositories
             int pageNumber = (page ?? 1);
             return await _cinemaManagementContext.Rooms.Include(c => c.Cinema).Include(s => s.Seats).ToPagedListAsync(pageNumber, pageSize);
         }
+        public async Task<IEnumerable<Room>> GetRoomsByCinema(Guid cinemaId)
+        {
+            return await _cinemaManagementContext.Rooms.Include(s => s.Seats).Include(c => c.Cinema).Where(id => id.CinemaId == cinemaId).ToListAsync();
+        }
         public async Task<Room> GetRoomAsync(Guid roomId)
         {
             return await _cinemaManagementContext.Rooms.Include(c => c.Cinema).Include(s => s.Seats).Where(r => r.Id == roomId).FirstOrDefaultAsync();

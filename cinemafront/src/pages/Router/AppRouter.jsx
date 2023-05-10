@@ -16,6 +16,7 @@ import MoviePage from "../MoviePage/MoviePage";
 import CinemaList from "../AdminPanel/Cinemas/CinemaList";
 import CreateCinema from "../AdminPanel/Cinemas/CreateCinema";
 import CreateRoom from "../AdminPanel/Rooms/CreateRoom";
+import RoomList from "../AdminPanel/Rooms/RoomList";
 
 const AppRouter = () => {
   return (
@@ -43,6 +44,7 @@ const AppRouter = () => {
             <Route path="create-movie" element={<CreateMovie />} />
             <Route path="create-genre" element={<CreateGenre />} />
             <Route path="cinemas-list" element={<CinemaList />} />
+            <Route path="rooms-list" element={<RoomList />} />
             <Route path="genres-list" element={<GenreList />} />
             <Route path="create-production" element={<CreateProduction />} />
             <Route path="productions-list" element={<ProductionList />} />

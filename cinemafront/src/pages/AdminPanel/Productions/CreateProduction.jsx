@@ -17,17 +17,16 @@ const CreateProduction = () => {
   const submit = (data) => {
     const dataToPost = {
       productionName: data.Name,
-      description: data.Description
+      description: data.Description,
     };
 
     CreateProductionRequest(dataToPost)
       .then((response) => {
-        toast.success("Production created!")
+        toast.success("Production created!");
         reset();
       })
       .catch((err) => console.log(err));
   };
-
 
   return (
     <Box
@@ -37,13 +36,11 @@ const CreateProduction = () => {
       alignItems="center"
       flexDirection="column"
     >
-      <Typography mb={2}>
-        Create Production
-      </Typography>
+      <Typography mb={2}>Create Production</Typography>
       <form
         noValidate
         autoComplete="off"
-        style={{ marginBottom: 20 }}
+        style={{ marginBottom: 20, width: "100%" }}
         onSubmit={handleSubmit(submit)}
       >
         <TextField

@@ -21,12 +21,11 @@ const CreateGenre = () => {
 
     CreateGenreRequest(dataToPost)
       .then((response) => {
-        toast.success("Genre created!")
+        toast.success("Genre created!");
         reset();
       })
       .catch((err) => console.log(err));
   };
-
 
   return (
     <Box
@@ -36,13 +35,11 @@ const CreateGenre = () => {
       alignItems="center"
       flexDirection="column"
     >
-      <Typography mb={2}>
-        Create Genre
-      </Typography>
+      <Typography mb={2}>Create Genre</Typography>
       <form
         noValidate
         autoComplete="off"
-        style={{ marginBottom: 20 }}
+        style={{ marginBottom: 20, width: "100%" }}
         onSubmit={handleSubmit(submit)}
       >
         <TextField
