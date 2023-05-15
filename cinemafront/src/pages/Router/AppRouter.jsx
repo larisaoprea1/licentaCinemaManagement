@@ -17,6 +17,7 @@ import CinemaList from "../AdminPanel/Cinemas/CinemaList";
 import CreateCinema from "../AdminPanel/Cinemas/CreateCinema";
 import CreateRoom from "../AdminPanel/Rooms/CreateRoom";
 import RoomList from "../AdminPanel/Rooms/RoomList";
+import Session from "../Session/Session";
 
 const AppRouter = () => {
   return (
@@ -35,7 +36,11 @@ const AppRouter = () => {
           <Route path="/register" element={<RegisterPage />} />
         </Route>
         <Route element={<ProtectedRoute />}>
-          <Route path="/movie/:movieId" element={<MoviePage/>} />
+          <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route
+            path="/movie/:movieId/session/:sessionId"
+            element={<Session />}
+          />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/admin-panel" element={<AdminPanel />}>

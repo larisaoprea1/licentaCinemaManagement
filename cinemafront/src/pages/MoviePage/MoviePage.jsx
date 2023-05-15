@@ -14,9 +14,13 @@ import { getMovieById } from "../../api/MoviesEndpoints";
 import MovieChip from "../../components/Chips/MovieChip";
 import { dateCheck } from "../../utils/dateCheck";
 import MovieIcon from "@mui/icons-material/Movie";
+import CreateSession from "./MovieSessions/CreateSession";
+import CinemaTabs from "./MovieSessions/CinemaTabs";
 const MoviePage = () => {
   const [movie, setMovie] = useState({});
+  const [open, setOpen] = useState(false);
   const params = useParams();
+
   const today = new Date();
   useEffect(() => {
     getMovie();
@@ -27,6 +31,9 @@ const MoviePage = () => {
       setMovie(res.data);
     });
   };
+
+  const handleOpen = () => setOpen(true);
+
   return (
     <Container maxWidth="xl" sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
       <Typography sx={{ fontSize: "20px" }}>{movie.name}</Typography>
@@ -46,7 +53,9 @@ const MoviePage = () => {
           />
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography>{movie.runTime}</Typography>
-            {movie.isAdult && <Typography sx={{mr:"0.2rem"}}>18+</Typography>}
+            {movie.isAdult && (
+              <Typography sx={{ mr: "0.2rem" }}>18+</Typography>
+            )}
           </Box>
         </Grid>
         <Grid item xl={10} xs={12}>
@@ -174,45 +183,24 @@ const MoviePage = () => {
               </Typography>
               <Box></Box>
             </Grid>
-            <Grid item xs={12} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+            <Grid
+              item
+              xs={12}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+            >
               <Typography sx={{ fontSize: "18px", marginBottom: "10px" }}>
                 Movie Sessions
               </Typography>
-              <Button variant="contained"> Create Session </Button>
+              <Button variant="contained" onClick={handleOpen}>
+                {" "}
+                Create Session{" "}
+              </Button>
             </Grid>
-            {/* <Grid
-              item
-              md={12}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: "30px",
-              }}
-            >
-              <Box
-                sx={{ height: "5px", width: "50%", backgroundColor: "gray" }}
-              />
+            <Grid item xs={12}>
+              <CinemaTabs movieId={movie.id} />
             </Grid>
-            {[...Array(105)].map((x, index) => (
-              <Grid item md={0.8} sx={{ marginTop: "10px" }}>
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: "#A899EB",
-                    "&:hover": {
-                      backgroundColor: "pink",
-                      cursor: "pointer",
-                    },
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index + 1}
-                </Box>
-              </Grid>
-            ))} */}
           </>
         )}
         {!dateCheck(movie.runDate, movie.endDate, today) && (
@@ -223,6 +211,7 @@ const MoviePage = () => {
           </Grid>
         )}
       </Grid>
+      <CreateSession open={open} setOpen={setOpen} movieId={movie.id} />
     </Container>
   );
 };

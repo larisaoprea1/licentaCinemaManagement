@@ -2,7 +2,8 @@
 {
     public class Session : BaseModel
     {
-        public DateTime SessionStart { get; set; }  
+        public DateTime SessionStart { get; set; }
+        public DateTime SessionEnd { get; set; }
         public Movie Movie { get; set; }
         public Guid MovieId { get; set; }
         public Room Room { get; set; }  

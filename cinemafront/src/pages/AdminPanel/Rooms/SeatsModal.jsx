@@ -66,7 +66,7 @@ export default function SeatsModal({ open, setOpen, selectedRoom }) {
                 {rows[row].map((seat, index) => (
                   <Grid key={index} item>
                     <Paper
-                      style={{
+                      sx={{
                         width: "40px",
                         height: "40px",
                         backgroundColor: "#f1f1f1",
