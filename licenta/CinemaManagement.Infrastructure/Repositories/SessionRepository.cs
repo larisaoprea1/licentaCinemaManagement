@@ -21,7 +21,9 @@ namespace CinemaManagement.Infrastructure.Repositories
 
         public async Task<IEnumerable<Session>> GetSessionsByRoom(Guid roomId)
         {
-            return await _cinemaManagementContext.Sessions.Include(r => r.Room).Where(ri => ri.RoomId == roomId).ToListAsync();
+            return await _cinemaManagementContext.Sessions
+                .Include(r => r.Room)
+                .Where(ri => ri.RoomId == roomId).ToListAsync();
         }
 
         public async Task<IEnumerable<Session>> GetSessionsByMovie(Guid movieId)

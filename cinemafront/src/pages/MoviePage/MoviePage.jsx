@@ -199,7 +199,7 @@ const MoviePage = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <CinemaTabs movieId={movie.id} />
+              <CinemaTabs movieId={movie.id} movie={movie}/>
             </Grid>
           </>
         )}
@@ -211,7 +211,12 @@ const MoviePage = () => {
           </Grid>
         )}
       </Grid>
-      <CreateSession open={open} setOpen={setOpen} movieId={movie.id} />
+      <CreateSession
+        open={open}
+        setOpen={setOpen}
+        movieId={movie.id}
+        getMovie={getMovie}
+      />
     </Container>
   );
 };

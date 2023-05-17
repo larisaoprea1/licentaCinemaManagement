@@ -29,7 +29,6 @@ const CreateCinema = () => {
       zipcode: data.Zipcode,
       country: data.Country.label,
     };
-    console.log(data);
     CreateCinemaRequest(dataToPost)
       .then((response) => {
         toast.success("Cinema created!");

@@ -2,7 +2,6 @@ import { Chip } from "@mui/material";
 import * as React from "react";
 
 export default function MovieChip(props) {
-  console.log(props);
   return (
     <>
       <Chip

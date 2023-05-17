@@ -215,7 +215,7 @@ function Header() {
                 <MenuItem
                   onClick={handleCloseUserMenu}
                   component={Link}
-                  to="/profile"
+                  to={`/profile/${user.UserName}`}
                 >
                   <Typography textAlign="center">Profile</Typography>
                 </MenuItem>

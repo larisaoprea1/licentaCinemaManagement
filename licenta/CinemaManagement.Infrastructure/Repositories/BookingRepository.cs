@@ -31,12 +31,24 @@ namespace CinemaManagement.Infrastructure.Repositories
                .ToListAsync();
         }
 
+        public async Task<IEnumerable<Booking>> GetUpcomingBookingsByUserId(Guid userId)
+        {
+            return await _cinemaManagementContext.Bookings
+               .Include(r => r.ReservedSeats).ThenInclude(s => s.Seat)
+               .Include(u => u.User)
+               .Include(s => s.Session).ThenInclude(r => r.Room)
+               .Include(s => s.Session).ThenInclude(r => r.Movie)
+               .Where(r => r.UserId == userId && r.Session.SessionStart >= DateTime.UtcNow)
+               .ToListAsync();
+        }
+
         public async Task<Booking> GetBookingById(Guid id)
         {
             return await _cinemaManagementContext.Bookings
                .Include(r => r.ReservedSeats).ThenInclude(s => s.Seat)
                .Include(u => u.User)
-               .Include(s => s.Session)
+               .Include(s => s.Session).ThenInclude(r => r.Room)
+               .Include(s => s.Session).ThenInclude(r => r.Movie)
                .Where(r => r.Id == id)
                .FirstOrDefaultAsync();
         }
@@ -49,7 +61,7 @@ namespace CinemaManagement.Infrastructure.Repositories
         {
             _cinemaManagementContext.Bookings.Update(booking);
         }
-        public void DeleteRoom(Booking booking)
+        public void DeleteBooking(Booking booking)
         {
             _cinemaManagementContext.Bookings.Remove(booking);
         }

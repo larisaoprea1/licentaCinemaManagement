@@ -3,6 +3,7 @@ using CinemaManagement.Application.Sessions.Commands.CreateSession;
 using CinemaManagement.Application.Sessions.Queries.GetSessionById;
 using CinemaManagement.Application.Sessions.Queries.GetSessionForMovieByCinema;
 using CinemaManagement.Application.Sessions.Queries.GetSessions;
+using CinemaManagement.Application.Sessions.Queries.GetSessionsByRoomId;
 using CinemaManagement.Application.Sessions.Queries.GetSessionsForMovie;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.SessionViewModels;
@@ -61,6 +62,18 @@ namespace CinemaManagement.Controllers
                 Id = sessionId
             });
             var mappedResult = _mapper.Map<SessionViewModel>(result);
+            return Ok(mappedResult);
+        }
+
+        [HttpGet]
+        [Route("getsessions/room/{roomId}")]
+        public async Task<IActionResult> GetSessionsByRoomId([FromRoute] Guid roomId)
+        {
+            var result = await _mediator.Send(new GetSessionByRoomIdQuery
+            {
+                RoomId = roomId
+            });
+            var mappedResult = _mapper.Map<IEnumerable<SessionViewModel>>(result);
             return Ok(mappedResult);
         }
 

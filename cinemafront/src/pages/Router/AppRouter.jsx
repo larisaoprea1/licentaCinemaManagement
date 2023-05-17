@@ -18,6 +18,8 @@ import CreateCinema from "../AdminPanel/Cinemas/CreateCinema";
 import CreateRoom from "../AdminPanel/Rooms/CreateRoom";
 import RoomList from "../AdminPanel/Rooms/RoomList";
 import Session from "../Session/Session";
+import Profile from "../ProfilePage/Profile";
+import Booking from "../Bookings/Booking";
 
 const AppRouter = () => {
   return (
@@ -34,6 +36,12 @@ const AppRouter = () => {
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/register" element={<RegisterPage />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile/:username" element={<Profile />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/booking/:id" element={<Booking />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/movie/:movieId" element={<MoviePage />} />

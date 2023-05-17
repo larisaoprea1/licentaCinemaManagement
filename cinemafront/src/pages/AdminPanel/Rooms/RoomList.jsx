@@ -28,6 +28,8 @@ import { Cancel, Delete, DoneOutline, EditOutlined } from "@mui/icons-material";
 import { CustomTableCell } from "../../../components/Table/CustomTableCell";
 import { toast } from "react-toastify";
 import SeatsModal from "./SeatsModal";
+import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
+import SessionsModal from "./SessionsModal";
 
 const RoomList = () => {
   const [cinemas, setCinemas] = useState([]);
@@ -35,6 +37,7 @@ const RoomList = () => {
   const [rooms, setRooms] = useState([]);
   const [selectedCinema, setSelectedCinema] = useState("");
   const [open, setOpen] = useState(false);
+  const [openSessions, setOpenSessions] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState("");
 
   const getCinemas = () => {
@@ -126,6 +129,7 @@ const RoomList = () => {
   };
 
   const handleOpen = () => setOpen(true);
+  const handleOpenSessions = () => setOpenSessions(true);
 
   return (
     <Box sx={{ mt: "2rem" }}>
@@ -163,6 +167,7 @@ const RoomList = () => {
                     <TableCell align="left">Name</TableCell>
                     <TableCell align="left">Cinema</TableCell>
                     <TableCell align="center">View Seats</TableCell>
+                    <TableCell align="center">View Sessions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -216,6 +221,17 @@ const RoomList = () => {
                           <ChairIcon />
                         </IconButton>
                       </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => {
+                            handleOpenSessions();
+                            setSelectedRoom(row);
+                          }}
+                        >
+                          <AccessAlarmIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -229,7 +245,12 @@ const RoomList = () => {
           )}
         </Grid>
       </Grid>
-      <SeatsModal open={open} setOpen={setOpen} selectedRoom={selectedRoom}/>
+      <SeatsModal open={open} setOpen={setOpen} selectedRoom={selectedRoom} />
+      <SessionsModal
+        open={openSessions}
+        setOpen={setOpenSessions}
+        selectedRoom={selectedRoom}
+      />
     </Box>
   );
 };

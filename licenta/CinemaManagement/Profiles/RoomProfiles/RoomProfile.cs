@@ -12,6 +12,8 @@ namespace CinemaManagement.Profiles.ProductionProfiles
             CreateMap<RoomViewModel, Room>();
             CreateMap<RoomForCreateViewModel, Room>();
             CreateMap<Room, RoomForCreateViewModel>();
+            CreateMap<Room, SimpleRoomViewModel>();
+            CreateMap<SimpleRoomViewModel, Room>();
         }
     }
 }

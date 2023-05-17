@@ -43,7 +43,7 @@ function a11yProps(index) {
   };
 }
 
-export default function CinemaTabs({ movieId }) {
+export default function CinemaTabs({ movieId, movie }) {
   const [value, setValue] = useState(0);
   const [cinemas, setCinemas] = useState([]);
   const [sessions, setSessions] = useState([]);
@@ -79,7 +79,7 @@ export default function CinemaTabs({ movieId }) {
     if (selectedCinema) {
       getSessions(selectedCinema);
     }
-  }, [selectedCinema]);
+  }, [selectedCinema, movie]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -109,7 +109,7 @@ export default function CinemaTabs({ movieId }) {
                   <li key={session.id}>{session.sessionStart}</li>
                 ))}
               </ul> */}
-              <Sessions sessions={sessions}/>
+              <Sessions sessions={sessions} />
             </TabPanel>
           </>
         );

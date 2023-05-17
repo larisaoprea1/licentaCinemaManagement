@@ -26,7 +26,6 @@ function RowInput({ onAddRow, onRemoveRow, rows, setRows }) {
     }
   }
 
-  console.log(rows);
   return (
     <Box sx={{ width: "100%" }}>
       <Grid container spacing={2}>

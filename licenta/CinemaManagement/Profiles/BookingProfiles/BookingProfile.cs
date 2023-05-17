@@ -10,6 +10,8 @@ namespace CinemaManagement.Profiles.BookingProfiles
         {
             CreateMap<Booking, BookingViewModel>();
             CreateMap<BookingViewModel, Booking>();
+            CreateMap<Booking, SimpleBookingViewModel>();
+            CreateMap<SimpleBookingViewModel, Booking>();
         }
     }
 }

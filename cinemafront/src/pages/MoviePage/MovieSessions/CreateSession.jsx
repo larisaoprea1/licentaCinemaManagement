@@ -26,7 +26,7 @@ const style = {
   overflow: "auto",
 };
 
-export default function CreateSession({ open, setOpen, movieId }) {
+export default function CreateSession({ open, setOpen, movieId, getMovie }) {
   const handleClose = () => {
     reset();
     setOpen(false);
@@ -75,7 +75,6 @@ export default function CreateSession({ open, setOpen, movieId }) {
     }
   }, [selectedCinema]);
 
-  console.log(rooms);
   const submit = (data) => {
     const dataToPost = {
       sessionStart: data.SessionStart,
@@ -87,6 +86,8 @@ export default function CreateSession({ open, setOpen, movieId }) {
     CreateSessionRequest(dataToPost)
       .then((res) => {
         toast.success("Session created");
+        getMovie();
+        handleClose();
       })
       .catch((err) => {
         console.log(err);
@@ -98,7 +99,9 @@ export default function CreateSession({ open, setOpen, movieId }) {
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

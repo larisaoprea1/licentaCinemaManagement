@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CinemaManagement.Application.Bookings.Commands.CreateBooking;
+using CinemaManagement.Application.Bookings.Commands.DeleteBooking;
 using CinemaManagement.Application.Bookings.Queries.GetAllBookings;
 using CinemaManagement.Application.Bookings.Queries.GetBooking;
+using CinemaManagement.Application.Bookings.Queries.GetUpcomingBookingsByUserId;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.BookingViewModels;
 using MediatR;
@@ -33,6 +35,18 @@ namespace CinemaManagement.Controllers
         }
 
         [HttpGet]
+        [Route("bookings/{userId}")]
+        public async Task<IActionResult> GetBookingsUser([FromRoute] Guid userId)
+        {
+            var bookings = await _mediator.Send(new GetUpcomingBookingsByUserIdQuery
+            {
+                UserId = userId
+            });
+            var result = _mapper.Map<IEnumerable<SimpleBookingViewModel>>(bookings);
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("booking/{bookingId}")]
         public async Task<IActionResult> GetBooking([FromRoute] Guid bookingId)
         {
@@ -40,7 +54,7 @@ namespace CinemaManagement.Controllers
             {
                 Id = bookingId
             });
-            var mappedResult = _mapper.Map<BookingViewModel>(result);
+            var mappedResult = _mapper.Map<SimpleBookingViewModel>(result);
             return Ok(mappedResult);
         }
 
@@ -63,6 +77,18 @@ namespace CinemaManagement.Controllers
             var mappedResult = _mapper.Map<BookingViewModel>(result);
 
             return Ok(mappedResult);
+        }
+
+        [HttpDelete]
+        [Route("deletebooking/{bookingId}")]
+        public async Task<IActionResult> DeleteBooking([FromRoute] Guid bookingId)
+        {
+            var result = await _mediator.Send(new DeleteBookingCommand
+            {
+                Id = bookingId
+            });
+
+            return Ok(result);
         }
     }
 }

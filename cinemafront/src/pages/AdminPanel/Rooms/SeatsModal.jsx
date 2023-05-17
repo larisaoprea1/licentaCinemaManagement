@@ -20,7 +20,6 @@ const style = {
 
 export default function SeatsModal({ open, setOpen, selectedRoom }) {
   const handleClose = () => setOpen(false);
-  console.log(selectedRoom);
 
   const rows = {};
 

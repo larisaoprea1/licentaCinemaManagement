@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { format, zonedTimeToUtc } from "date-fns-tz";
 import SessionSeats from "./SessionSeats";
+import { useUser } from "../../context/useUser";
 
 const Session = () => {
   const params = useParams();
   const [session, setSession] = useState([]);
-  console.log(session);
+  const { user, setUser } = useUser();
 
   const getSession = () => {
     GetSessionById(params.sessionId).then((res) => {
@@ -71,7 +72,7 @@ const Session = () => {
           </Grid>
         </Grid>
       </Grid>
-      <SessionSeats selectedRoom={session?.room ? session?.room : []} />
+      <SessionSeats selectedRoom={session?.room ? session?.room : []} session={session} user={user} getSession={getSession}/>
     </Container>
   );
 };

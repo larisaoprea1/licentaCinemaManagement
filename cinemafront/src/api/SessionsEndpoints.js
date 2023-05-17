@@ -14,6 +14,13 @@ export const GetSessionsByMovieId = async (movieId) => {
   return response;
 };
 
+export const GetSessionsByRoomId = async (roomId) => {
+  const response = await axiosInstance.get(
+    `${API_URL}/getsessions/room/${roomId}`
+  );
+  return response;
+};
+
 export const GetSessionsForMovieByCinema = async (movieId, cinemaId) => {
   const response = await axiosInstance.get(
     `${API_URL}/sessions/movieId/${movieId}/cinema/${cinemaId}`

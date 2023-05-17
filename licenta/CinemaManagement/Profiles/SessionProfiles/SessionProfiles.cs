@@ -12,6 +12,8 @@ namespace CinemaManagement.Profiles.SessionProfiles
             CreateMap<SessionViewModel, Session>();
             CreateMap<SessionForCreateViewModel, Session>();
             CreateMap<Session, SessionForCreateViewModel>();
+            CreateMap<SimpleSessionViewModel, Session>();
+            CreateMap<Session, SimpleSessionViewModel>();
         }
     }
 }

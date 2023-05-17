@@ -11,10 +11,11 @@ namespace CinemaManagement.Application.Interfaces
     {
         Task<int> CountAsync();
         Task<Booking> CreateBookingAsync(Booking booking);
-        void DeleteRoom(Booking booking);
+        void DeleteBooking(Booking booking);
         Task<Booking> GetBookingById(Guid id);
         Task<IEnumerable<Booking>> GetBookings();
         Task<IEnumerable<Booking>> GetBookingsBySessionId(Guid sessionId);
+        Task<IEnumerable<Booking>> GetUpcomingBookingsByUserId(Guid userId);
         Task SaveAsync();
         Task UpdateRoomAsync(Booking booking);
     }
