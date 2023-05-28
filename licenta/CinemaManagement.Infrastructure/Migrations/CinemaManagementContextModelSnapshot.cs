@@ -279,6 +279,40 @@ namespace CinemaManagement.Infrastructure.Migrations
                     b.ToTable("ReservedSeats");
                 });
 
+            modelBuilder.Entity("CinemaManagement.Domain.Models.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("CinemaManagement.Domain.Models.Room", b =>
                 {
                     b.Property<Guid>("Id")
@@ -606,6 +640,21 @@ namespace CinemaManagement.Infrastructure.Migrations
                     b.ToTable("MovieProduction");
                 });
 
+            modelBuilder.Entity("MovieUser", b =>
+                {
+                    b.Property<Guid>("MoviesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("MoviesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("MovieUser");
+                });
+
             modelBuilder.Entity("ActorMovie", b =>
                 {
                     b.HasOne("CinemaManagement.Domain.Models.Actor", null)
@@ -665,6 +714,25 @@ namespace CinemaManagement.Infrastructure.Migrations
                     b.Navigation("Seat");
 
                     b.Navigation("Session");
+                });
+
+            modelBuilder.Entity("CinemaManagement.Domain.Models.Review", b =>
+                {
+                    b.HasOne("CinemaManagement.Domain.Models.Movie", "Movie")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CinemaManagement.Domain.Models.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CinemaManagement.Domain.Models.Room", b =>
@@ -789,6 +857,21 @@ namespace CinemaManagement.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MovieUser", b =>
+                {
+                    b.HasOne("CinemaManagement.Domain.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CinemaManagement.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CinemaManagement.Domain.Models.Booking", b =>
                 {
                     b.Navigation("ReservedSeats");
@@ -801,6 +884,8 @@ namespace CinemaManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("CinemaManagement.Domain.Models.Movie", b =>
                 {
+                    b.Navigation("Reviews");
+
                     b.Navigation("Sessions");
                 });
 
@@ -822,6 +907,8 @@ namespace CinemaManagement.Infrastructure.Migrations
             modelBuilder.Entity("CinemaManagement.Domain.Models.User", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

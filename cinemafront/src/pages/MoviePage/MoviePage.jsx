@@ -16,27 +16,94 @@ import { dateCheck } from "../../utils/dateCheck";
 import MovieIcon from "@mui/icons-material/Movie";
 import CreateSession from "./MovieSessions/CreateSession";
 import CinemaTabs from "./MovieSessions/CinemaTabs";
+import Reviews from "./MovieReviews/Reviews";
+import { useUser } from "../../context/useUser";
+import {
+  AddMovieToWatched,
+  GetWatchedMovies,
+  RemoveMovieFromWatched,
+} from "../../api/AuthEndpoints";
+import { toast } from "react-toastify";
 const MoviePage = () => {
   const [movie, setMovie] = useState({});
   const [open, setOpen] = useState(false);
   const params = useParams();
+  const { user, setUser } = useUser();
+  const [userMovies, setUserMovies] = useState([]);
+  const [isWatched, setIsWatched] = useState(false);
+
+  console.log(isWatched);
 
   const today = new Date();
   useEffect(() => {
     getMovie();
   }, []);
 
+  useEffect(() => {
+    if (user.IsLoggedIn) {
+      getUserMovies();
+    }
+  }, [user]);
+  console.log(movie);
+  console.log(userMovies);
+
+  useEffect(() => {
+    if (movie && userMovies) {
+      const foundObject = userMovies.find((item) => item.id === movie.id);
+      console.log(foundObject);
+      setIsWatched(!!foundObject);
+    }
+  }, [movie, userMovies]);
   const getMovie = () => {
     getMovieById(params.movieId).then((res) => {
       setMovie(res.data);
     });
   };
 
-  const handleOpen = () => setOpen(true);
+  const getUserMovies = () => {
+    GetWatchedMovies(user.UserName).then((res) => {
+      setUserMovies(res.data);
+    });
+  };
 
+  const handleWatched = () => {
+    if (!isWatched) {
+      AddMovieToWatched(movie.id, user.Id).then(() => {
+        setIsWatched(true);
+        toast.success("Movie added to watched movies!");
+      });
+    }
+    if (isWatched) {
+      RemoveMovieFromWatched(movie.id, user.Id).then(() => {
+        setIsWatched(false);
+        toast.success("Movie removed from watched movies!");
+      });
+    }
+  };
+  const handleOpen = () => setOpen(true);
   return (
     <Container maxWidth="xl" sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
-      <Typography sx={{ fontSize: "20px" }}>{movie.name}</Typography>
+      <Box
+        sx={{
+          display: { sm: "flex", xs: "block" },
+          justifyContent: "space-between",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
+          mb: "0.5rem",
+        }}
+      >
+        <Typography sx={{ fontSize: "20px" }}>{movie.name}</Typography>
+        {user.IsLoggedIn &&
+          (!isWatched ? (
+            <Button variant="outlined" onClick={handleWatched}>
+              Add to Watched Movies
+            </Button>
+          ) : (
+            <Button variant="contained" onClick={handleWatched}>
+              Remove from Watched Movies
+            </Button>
+          ))}
+      </Box>
       <Divider sx={{ marginBottom: "10px" }} />
       <Grid container>
         <Grid item xl={2} xs={12}>
@@ -46,6 +113,7 @@ const MoviePage = () => {
                 opacity: "0.95",
               },
               width: 230,
+              height: 350,
             }}
             component="img"
             className="gameImg"
@@ -199,10 +267,11 @@ const MoviePage = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <CinemaTabs movieId={movie.id} movie={movie}/>
+              <CinemaTabs movieId={movie.id} movie={movie} />
             </Grid>
           </>
         )}
+
         {!dateCheck(movie.runDate, movie.endDate, today) && (
           <Grid item md={12}>
             <Typography sx={{ fontSize: "18px" }}>
@@ -210,6 +279,14 @@ const MoviePage = () => {
             </Typography>
           </Grid>
         )}
+
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Reviews />
+        </Grid>
       </Grid>
       <CreateSession
         open={open}

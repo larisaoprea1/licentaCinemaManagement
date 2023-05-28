@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CinemaManagement.Application.DTOs;
 using CinemaManagement.Domain.Models;
 using CinemaManagement.ViewModels.UserViewModels;
 
@@ -12,6 +13,9 @@ namespace CinemaManagement.Profiles.UserProfiles
             CreateMap<UserViewModel, User>();
             CreateMap<RegisterViewModel, User>();
             CreateMap<LoginViewModel, User>();
+
+            CreateMap<UserWithRolesDtoApi, UserWithRolesDto>();
+            CreateMap<UserWithRolesDto, UserWithRolesDtoApi>();
         }
     }
 }

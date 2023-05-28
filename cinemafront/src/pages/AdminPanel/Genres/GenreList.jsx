@@ -5,6 +5,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
 } from "@mui/material";
@@ -102,63 +103,65 @@ const GenreList = () => {
   return (
     <Box sx={{ mt: 2, mb: 1 }}>
       <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center" sx={{ width: "80px" }}>
-                Actions
-              </TableCell>
-              <TableCell align="left">Genre Name</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell sx={{ width: "80px" }}>
-                  {row.isEditMode ? (
-                    <>
-                      <IconButton
-                        aria-label="done"
-                        onClick={() => {
-                          onApproveClick(row);
-                        }}
-                      >
-                        <DoneOutline />
-                      </IconButton>
-                      <IconButton
-                        aria-label="revert"
-                        onClick={() => onRevert(row.id)}
-                      >
-                        <Cancel />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <>
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => onToggleEditMode(row.id)}
-                      >
-                        <EditOutlined />
-                      </IconButton>
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => deleteGenre(row.id)}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </>
-                  )}
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center" sx={{ width: "80px" }}>
+                  Actions
                 </TableCell>
-                <CustomTableCell {...{ row, name: "genreName", onChange }} />
+                <TableCell align="left">Genre Name</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-          <CustomTablePagination
-            page={page}
-            setPage={setPage}
-            count={totalCount}
-          />
-        </Table>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell sx={{ width: "80px" }}>
+                    {row.isEditMode ? (
+                      <>
+                        <IconButton
+                          aria-label="done"
+                          onClick={() => {
+                            onApproveClick(row);
+                          }}
+                        >
+                          <DoneOutline />
+                        </IconButton>
+                        <IconButton
+                          aria-label="revert"
+                          onClick={() => onRevert(row.id)}
+                        >
+                          <Cancel />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => onToggleEditMode(row.id)}
+                        >
+                          <EditOutlined />
+                        </IconButton>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => deleteGenre(row.id)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </>
+                    )}
+                  </TableCell>
+                  <CustomTableCell {...{ row, name: "genreName", onChange }} />
+                </TableRow>
+              ))}
+            </TableBody>
+            <CustomTablePagination
+              page={page}
+              setPage={setPage}
+              count={totalCount}
+            />
+          </Table>
+        </TableContainer>
       </Paper>
     </Box>
   );

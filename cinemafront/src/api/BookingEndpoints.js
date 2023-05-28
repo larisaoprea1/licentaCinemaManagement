@@ -16,3 +16,8 @@ export const GetBookingById = async (id) => {
   const response = await axiosInstance.get(`${API_URL}/booking/${id}`);
   return response;
 };
+
+export const DeleteBooking = async (id) =>{
+  const response = await axiosInstance.delete(`${API_URL}/deletebooking/${id}`)
+  return response;
+}

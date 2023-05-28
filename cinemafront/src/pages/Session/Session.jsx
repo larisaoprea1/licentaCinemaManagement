@@ -41,6 +41,7 @@ const Session = () => {
           <Box
             sx={{
               width: 200,
+              height: 330
             }}
             component="img"
             className="gameImg"

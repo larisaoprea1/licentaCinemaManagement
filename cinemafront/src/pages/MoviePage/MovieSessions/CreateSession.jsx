@@ -3,7 +3,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Grid, MenuItem, Paper, TextField } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+  MenuItem,
+  Paper,
+  TextField,
+} from "@mui/material";
 import { GetPopulateCinemas } from "../../../api/CinemasEndpoints";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -12,6 +20,8 @@ import { GetRoomsByCinemaId } from "../../../api/RoomsEndpoints";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { CreateSessionRequest } from "../../../api/SessionsEndpoints";
 import { toast } from "react-toastify";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import RoomSessions from "./RoomSessions";
 
 const style = {
   position: "absolute",
@@ -24,6 +34,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   overflow: "auto",
+  maxHeight: { lg: "60%", xs: "80%" },
 };
 
 export default function CreateSession({ open, setOpen, movieId, getMovie }) {
@@ -162,7 +173,24 @@ export default function CreateSession({ open, setOpen, movieId, getMovie }) {
                   ))}
                 </TextField>
               </Grid>
-
+              <Grid item xs={12}>
+                {watch("Room") && (
+                  <Box>
+                    <Accordion style={{ boxShadow: "none" }}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography>View sessions for this room</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <RoomSessions selectedRoom={watch("Room")} />
+                      </AccordionDetails>
+                    </Accordion>
+                  </Box>
+                )}
+              </Grid>
               <Grid item xs={12} lg={6}>
                 <Controller
                   control={control}

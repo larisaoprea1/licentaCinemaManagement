@@ -20,6 +20,7 @@ import RoomList from "../AdminPanel/Rooms/RoomList";
 import Session from "../Session/Session";
 import Profile from "../ProfilePage/Profile";
 import Booking from "../Bookings/Booking";
+import UserList from "../AdminPanel/Users/UserList";
 
 const AppRouter = () => {
   return (
@@ -63,6 +64,7 @@ const AppRouter = () => {
             <Route path="productions-list" element={<ProductionList />} />
             <Route path="create-actor" element={<CreateActor />} />
             <Route path="actors-list" element={<ActorList />} />
+            <Route path="users-list" element={<UserList />} />
           </Route>
         </Route>
       </Routes>

@@ -136,14 +136,16 @@ function Header() {
             >
               Movies
             </Button>
-            <Button
-              component={Link}
-              to="/admin-panel/create-movie"
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Admin Panel
-            </Button>
+            {user.IsAdmin && (
+              <Button
+                component={Link}
+                to="/admin-panel/create-movie"
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Admin Panel
+              </Button>
+            )}
           </Box>
 
           {!user.IsLoggedIn && (

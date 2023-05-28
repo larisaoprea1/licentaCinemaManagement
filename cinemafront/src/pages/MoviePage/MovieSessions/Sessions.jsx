@@ -23,8 +23,10 @@ const Sessions = ({ sessions }) => {
     }, {});
   }
 
+  console.log(sessions)
   return (
     <div>
+      {sessions.length == 0 && <Typography>No sessions are currently available</Typography>}
       {Object.entries(groupedSessions).map(([date, sessions]) => (
         <div key={date}>
           <Typography variant="h6">

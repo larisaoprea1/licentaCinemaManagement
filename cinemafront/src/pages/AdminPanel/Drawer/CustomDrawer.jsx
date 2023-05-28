@@ -192,6 +192,23 @@ export default function CustomDrawer(props) {
           </Grid>
         </AccordionDetails>
       </Accordion>
+      <Accordion>
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+          <Typography>Users</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container direction="column">
+            <MenuItem
+              onClick={() => {
+                // props.setOpen(false);
+                navigate("users-list");
+              }}
+            >
+              <Typography>User List</Typography>
+            </MenuItem>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
   return (

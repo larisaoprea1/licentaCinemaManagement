@@ -4,6 +4,8 @@ import { useParams } from "react-router";
 import { Box, Container } from "@mui/system";
 import { Avatar, Grid, Paper, Tab, Tabs, Typography } from "@mui/material";
 import UserBookings from "./UserBookings";
+import UserReviews from "./UserReviews";
+import WatchedMovies from "./WatchedMovies";
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState([]);
@@ -31,7 +33,7 @@ const Profile = () => {
       </div>
     );
   };
-  
+
   return (
     <Container maxWidth="md" sx={{ marginTop: 4 }}>
       <Paper elevation={3} sx={{ padding: 4 }}>
@@ -70,11 +72,18 @@ const Profile = () => {
         >
           <Tab label="Upcoming Bookings" />
           <Tab label="Reviews" />
+          <Tab label="Watched Movies" />
+
         </Tabs>
         <TabPanel value={selectedTab} index={0}>
           <UserBookings user={currentUser} />
         </TabPanel>
-        <TabPanel value={selectedTab} index={1}></TabPanel>
+        <TabPanel value={selectedTab} index={1}>
+          <UserReviews />
+        </TabPanel>
+        <TabPanel value={selectedTab} index={2}>
+          <WatchedMovies username={currentUser.userName}/>
+        </TabPanel>
       </Paper>
     </Container>
   );

@@ -19,5 +19,8 @@
         public ICollection<Genre> Genres { get; set; }
         public ICollection<Actor> Actors { get; set; }
         public ICollection<Production> Productions { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<User> Users { get; set; }
+
     }
 }

@@ -1,14 +1,23 @@
 ﻿using AutoMapper;
+using CinemaManagement.Application.DTOs;
+using CinemaManagement.Application.Users.Commands.AddMovieToWatched;
 using CinemaManagement.Application.Users.Commands.AssignRole;
 using CinemaManagement.Application.Users.Commands.ChangePassword;
 using CinemaManagement.Application.Users.Commands.DeleteUser;
 using CinemaManagement.Application.Users.Commands.Login;
 using CinemaManagement.Application.Users.Commands.Register;
+using CinemaManagement.Application.Users.Commands.RemoveMovieFromWatched;
+using CinemaManagement.Application.Users.Commands.RemoveRole;
+using CinemaManagement.Application.Users.Commands.UpdateUser;
+using CinemaManagement.Application.Users.Queries.CountUsers;
 using CinemaManagement.Application.Users.Queries.GetAllUsers;
 using CinemaManagement.Application.Users.Queries.GetUserByEmail;
 using CinemaManagement.Application.Users.Queries.GetUserById;
 using CinemaManagement.Application.Users.Queries.GetUserByUsername;
+using CinemaManagement.Application.Users.Queries.GetUsersPaginated;
+using CinemaManagement.Application.Users.Queries.GetUserWatchedMovies;
 using CinemaManagement.Domain.Models;
+using CinemaManagement.ViewModels.MovieViewModels;
 using CinemaManagement.ViewModels.UserViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +45,26 @@ namespace CinemaManagement.Controllers
             var usersToFind = await _mediator.Send(new GetAllUsersQuery());
             return Ok(_mapper.Map<IEnumerable<UserViewModel>>(usersToFind));
         }
+       
+
+        [HttpGet]
+        [Route("page/{page}/pagesize/{pagesize}")]
+        public async Task<IActionResult> GetUsersPaginated(int page, int pagesize)
+        {
+            var users = await _mediator.Send(new GetUsersPaginatedQuery
+            {
+                Page = page,
+                PageSize = pagesize
+            });
+
+            var count = await _mediator.Send(new CountUsersQuery());
+            var totalPages = ((double)count / (double)pagesize);
+            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
+            var result = _mapper.Map<IEnumerable<UserWithRolesDtoApi>>(users);
+            return Ok(new PagedResponse<IEnumerable<UserWithRolesDtoApi>>(result, page, count, roundedTotalPages, pagesize));
+        }
+
         [HttpGet]
         [Route("email/{email}")]
         public async Task<IActionResult> GetUserByEmail([FromRoute] string email)
@@ -128,7 +157,7 @@ namespace CinemaManagement.Controllers
             return Ok(result);
         }
         [HttpPost]
-        [Route("assign-role")]
+        [Route("assign-role/user/{userName}/role/{roleName}")]
         public async Task<IActionResult> AssignRole(string userName, string roleName)
         {
             if (!ModelState.IsValid)
@@ -152,6 +181,40 @@ namespace CinemaManagement.Controllers
             }
             return Ok();
         }
+
+        [HttpDelete]
+        [Route("remove-role/user/{userName}/role/{roleName}")]
+        public async Task<IActionResult> RemoveRoleFromUser(string userName, string roleName)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var query = new GetUserByUsernameQuery
+            {
+                UserName = userName,
+            };
+
+            var userFound = await _mediator.Send(query);
+
+            if (userFound == null)
+                return BadRequest("User not found");
+
+            var command = new RemoveRoleCommand
+            {
+                UserName = userName,
+                RoleName = roleName
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (!result)
+            {
+                return BadRequest("Failed to remove role from user");
+            }
+
+            return Ok($"{userName} removed successfully from {roleName} role");
+        }
+
         [HttpPost]
         [Route("changepassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePassword)
@@ -179,5 +242,62 @@ namespace CinemaManagement.Controllers
             });
             return Ok("200");
         }
+
+        [HttpPost]
+        [Route("movie/{movieid}/user/{userid}")]
+        public async Task<ActionResult> AddMovieToWatched(Guid movieid, Guid userid)
+        {
+            var command = new AddMovieToWatchedCommand
+            {
+                MovieId = movieid,
+                UserId = userid
+            };
+
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("movie/{movieid}/user/{userid}")]
+        public async Task<ActionResult> RemoveMovieFromWatched(Guid movieid, Guid userid)
+        {
+            var command = new RemoveMovieFromWatchedCommand
+            {
+                MovieId = movieid,
+                UserId = userid
+            };
+
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("watchedmovies/{username}")]
+        public async Task<ActionResult> GetWatchedMovies(string username)
+        {
+            var result = await _mediator.Send(new GetUserWatchedMoviesQuery { UserName = username });
+            var mappedResult = _mapper.Map<IEnumerable<SimpleMovieViewModel>>(result);
+            return Ok(mappedResult);
+        }
+
+        [HttpPut]
+        [Route("edituser/{userId}")]
+        public async Task<ActionResult<UserViewModel>> EditUser([FromRoute] Guid userId, UserToUpdateViewModel user)
+        {
+            var result = await _mediator.Send(new UpdateUserCommand
+            {
+                Id = userId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfileImageSrc = user.ProfileImageSrc,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                UserName = user.UserName,
+            });
+
+            var mappedResult = _mapper.Map<UserViewModel>(result);
+            return Ok(mappedResult);
+        }
+
     }
 }

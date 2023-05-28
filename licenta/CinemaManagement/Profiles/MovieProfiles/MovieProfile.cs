@@ -12,7 +12,8 @@ namespace CinemaManagement.Profiles.MovieProfiles
             CreateMap<MovieViewModel, Movie>();
             CreateMap<MovieForCreateViewModel, Movie>();
             CreateMap<MovieForUpdateViewModel, Movie>();
-
+            CreateMap<SimpleMovieViewModel, Movie>();
+            CreateMap<Movie, SimpleMovieViewModel>();
         }
     }
 }
